@@ -15,7 +15,13 @@ const dbName = process.env.MONGO_DB_DBNAME;
 // Connection URL
 const url = `mongodb://${username}:${password}@${process.env.MONGO_DB_IP}:${process.env.MONGO_DB_PORT}/${dbName}?authMechanism=${authMechanism}`;
 
+// The database instance
 let db = null;
+
+// The tweet collection
+let tweetCol = null;
+// The user collection
+let userCol = null;
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, client) {
@@ -24,23 +30,18 @@ MongoClient.connect(url, function(err, client) {
 
   db = client.db(dbName);
 
+  tweetCol = db.collection("tweets")
+  userCol = db.collection("users")
+
   //client.close();
 });
 
-router.get('/tweets', function(req, res, next) {
-  db.collection('tweets').find({}).toArray((err, docs) => {
+// The tweets collection
+
+router.get("/tweets/count", (req, res, next) => {
+  tweetCol.countDocuments({}, (err, r) => {
     assert.equal(null, err)
-
-    res.send(docs)
-  })
-});
-
-router.get("/add/:title/:msg", (req, res, next) => {
-  db.collection('tweets').insertOne(req.params, (err, r) => {
-    assert.equal(null, err);
-    assert.equal(1, r.insertedCount);
-
-    res.send(r)
+    res.send({count: r})
   })
 })
 
