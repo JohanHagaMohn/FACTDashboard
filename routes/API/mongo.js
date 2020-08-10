@@ -18,7 +18,7 @@ const url = `mongodb://${username}:${password}@${process.env.MONGO_DB_IP}:${proc
 let db = null;
 
 // Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
+MongoClient.connect(url, function (err, client) {
   assert.equal(null, err);
   console.log("Connected successfully to Mongo DB");
 
@@ -27,7 +27,7 @@ MongoClient.connect(url, function(err, client) {
   //client.close();
 });
 
-router.get('/tweets', function(req, res, next) {
+router.get('/tweets', function (req, res, next) {
   db.collection('tweets').find({}).toArray((err, docs) => {
     assert.equal(null, err)
 
