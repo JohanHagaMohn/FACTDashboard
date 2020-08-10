@@ -11,4 +11,10 @@ body {
   a {
     color: #00B7FF;
   }
+  #count {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 30px;
+  }
   
