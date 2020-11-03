@@ -1,5 +1,11 @@
 /* globals Chart:false, feather:false */
 
+(async function () {
+  let count = await $.get("./API/mongo/tweets/count");
+  document.querySelector("#count").innerHTML = count.count;
+})();
+
+
 (function () {
   'use strict'
 
