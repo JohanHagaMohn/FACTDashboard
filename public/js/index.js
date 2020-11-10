@@ -5,37 +5,45 @@
   document.querySelector("#count").innerHTML = count.count;
 })();
 
+async function lastWeekData() {
+  pData = [null, null, null, null, null, null, null];
 
-(function () {
-  'use strict'
+  for(let i = 0; i < 7; i++) {
+    pData[i] = $.get("./API/mongo/tweets/count/date?y=2020&m=8&d=" + (i + 11));
+  }
 
+  let data = await Promise.all(pData)
+
+  for(let i = 0; i < data.length; i++) {
+    data[i] = data[i].count
+  }
+
+  return data
+}
+
+(async function () {
   feather.replace()
 
   // Graphs
-  var ctx = document.getElementById('myChart')
+  var ctx = document.getElementById('myChart');
   // eslint-disable-next-line no-unused-vars
+
+  let data = await lastWeekData();
+
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: [
-        'Sunday',
-        'Monday',
         'Tuesday',
         'Wednesday',
         'Thursday',
         'Friday',
-        'Saturday'
+        'Saturday',
+        'Sunday',
+        'Monday'
       ],
       datasets: [{
-        data: [
-          15339,
-          21345,
-          18483,
-          24003,
-          23489,
-          24092,
-          12034
-        ],
+        data: data,
         lineTension: 0,
         backgroundColor: 'transparent',
         borderColor: '#007bff',
@@ -56,4 +64,4 @@
       }
     }
   })
-}())
+})()
