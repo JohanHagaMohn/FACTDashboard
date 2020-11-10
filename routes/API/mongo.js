@@ -45,4 +45,42 @@ router.get("/tweets/count", (req, res, next) => {
   })
 })
 
+function monthFromNum(m) {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  return months[parseInt(m) - 1]
+}
+
+function getRegexFromDate(d, m, y) {
+  return new RegExp(/\w{3} /.source + monthFromNum(m) + / /.source + d + / ([0-9]{2}:){2}[0-9]{2} \+[0-9]{4} /.source + y)
+}
+
+router.get("/tweets/count/date", async (req, res, next) => {
+  // Validate request
+
+  if (!( req.query.d
+    && req.query.d.match(/^[0-9]{1,2}$/)
+    && req.query.m
+    && req.query.m.match(/^[0-9]{1,2}$/)
+    && req.query.y
+    && req.query.y.match(/^[0-9]{4}$/)
+  )) {
+    res.status(400).send({
+      status: 400,
+      msg: "Bad Request.  This api needs a d, m and y parameter.  They should be a string where d and m contains one or two numbers and y contains four numbers."
+    })
+    return;
+  }
+
+  let regexDate = getRegexFromDate(req.query.d, req.query.m, req.query.y)
+
+  tweetCol.countDocuments({
+    "created_at": {
+      $regex: regexDate
+    }
+  }, (err, r) => {
+    assert.equal(null, err)
+    res.send({count: r})
+  })
+})
+
 module.exports = router;
