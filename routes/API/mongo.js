@@ -83,4 +83,15 @@ router.get("/tweets/count/date", async (req, res, next) => {
   })
 })
 
+// An endpoint to get info from one spesific tweet
+router.get("/tweets/get", async (req, res, next) => {
+  const response = await tweetCol.findOne({
+
+  },{
+    skip: req.query.skip | 0//parseInt(Math.random() * 100)
+  })
+
+  res.send(response)
+})
+
 module.exports = router;

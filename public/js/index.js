@@ -5,6 +5,51 @@
   document.querySelector("#count").innerHTML = count.count;
 })();
 
+let tweetDOMs = [];
+const options = {
+  theme: "light",
+  width: 350,
+  align: "center",
+  dnt: true,
+  conversation: "none"
+}
+
+async function addTweet(DOMelm) {
+  let tweet = await $.get("./API/mongo/tweets/get?skip=" + parseInt(Math.random() * 199));
+  try {
+    twttr.widgets.createTweet(
+      tweet.id_str,
+      DOMelm,
+      options
+    )
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function findTweets() {
+  for(DOM of tweetDOMs) {
+    DOM.innerHTML = "";
+    addTweet(DOM)
+  }
+}
+
+(async function() {
+
+  let randTweet = document.getElementById("randTweet")
+  let nCols = Math.floor(randTweet.clientWidth / options.width * 0.97)
+
+  for (let i = 0; i < nCols; i++) {
+    let divElm = document.createElement("div")
+    divElm.classList.add("col-sm")
+    randTweet.appendChild(divElm)
+    tweetDOMs.push(divElm)
+  }
+
+  await twttr.ready()
+  await findTweets()
+})();
+
 async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];
 
@@ -44,10 +89,11 @@ async function lastWeekData() {
       ],
       datasets: [{
         data: data,
-        lineTension: 0,
+        lineTension: 0.4,
         backgroundColor: 'transparent',
         borderColor: '#007bff',
         borderWidth: 4,
+        pointHitRadius: 50,
         pointBackgroundColor: '#007bff'
       }]
     },
@@ -55,7 +101,7 @@ async function lastWeekData() {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero: false
+            beginAtZero: true
           }
         }]
       },
