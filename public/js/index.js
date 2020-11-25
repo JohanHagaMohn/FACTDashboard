@@ -1,6 +1,8 @@
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-(async function () {
+let a = null;
+
+(async function() {
   let count = await $.get("./API/mongo/tweets/count");
   document.querySelector("#count").innerHTML = count.count;
 })();
@@ -8,13 +10,13 @@ const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sat
 async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];
 
-  for(let i = 0; i < 7; i++) {
+  for (let i = 0; i < 7; i++) {
     pData[i] = $.get("./API/mongo/tweets/count/date?y=2020&m=8&d=" + (i + 11));
   }
 
   let data = await Promise.all(pData)
 
-  for(let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     data[i]["d"] = i + 11
     data[i]["day"] = daysOfWeek[i]
   }
@@ -22,7 +24,7 @@ async function lastWeekData() {
   return data
 }
 
-(async function () {
+(async function() {
 
   let ctx = document.getElementById('tweetHistory')
 
@@ -117,6 +119,11 @@ async function lastWeekData() {
     .attr("stroke-linecap", "round")
     .attr("stroke-width", 5);
 
+  const tooltip = d3.select("#tweetHistory").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0)
+    .style("position", "absolute");
+
   function updateScales(data) {
     // Create scales
     const yScale = d3
@@ -127,14 +134,17 @@ async function lastWeekData() {
       .scaleLinear()
       .range([0, width - margin.right])
       .domain([d3.min(data, d => d.d), d3.max(data, d => d.d)]).nice();
-    return { yScale, xScale };
+    return {
+      yScale,
+      xScale
+    };
   }
 
   function createLine(xScale, yScale) {
     return line = d3
-    .line()
-    .x(d => xScale(d.d))
-    .y(d => yScale(d.count));
+      .line()
+      .x(d => xScale(d.d))
+      .y(d => yScale(d.count));
   }
 
   function updateAxes(data, chart, xScale, yScale) {
@@ -165,22 +175,84 @@ async function lastWeekData() {
     const pathLength = updatedPath.node().getTotalLength();
     // D3 provides lots of transition options, have a play around here:
     // https://github.com/d3/d3-transition
-    const transitionPath = d3
+    /*const transitionPath = d3
       .transition()
       .ease(d3.easeSin)
-      .duration(2500);
+      .duration(2500);*/
     updatedPath
       .attr("stroke-dashoffset", pathLength)
       .attr("stroke-dasharray", pathLength)
-      .transition(transitionPath)
+      //.transition(transitionPath)
       .attr("stroke-dashoffset", 0);
+
+    //const lines = chart.selectAll("lines")//chart.selectAll("lines")
+    //console.log(lines)
+
+    a = grp
+
+    grp.selectAll("points")
+      .data(d => d.count)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xScale(d.d))
+      .attr("cy", d => yScale(d.count))
+      .attr("r", 10)
+      .attr("class", "point")
+      .style("opacity", 1);
+
+
+    grp.selectAll("circles")
+      .data(d => d.count)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xScale(d.d))
+      .attr("cy", d => yScale(d.count))
+      .attr('r', 10) //1
+      .style("opacity", 1) //0
+      .on('mouseover', function(d) {
+        tooltip.transition()
+          .delay(30)
+          .duration(200)
+          .style("opacity", 1);
+
+        tooltip.html(d.count)
+          .style("left", (d3.event.pageX + 25) + "px")
+          .style("top", (d3.event.pageY) + "px");
+
+        const selection = d3.select(this).raise();
+
+        selection
+          .transition()
+          .delay("20")
+          .duration("200")
+          .attr("r", 6)
+          .style("opacity", 1)
+          .style("fill", "#ed3700");
+      })
+      .on("mouseout", function(d) {
+        tooltip.transition()
+          .duration(100)
+          .style("opacity", 1); //0
+
+        const selection = d3.select(this);
+
+        selection
+          .transition()
+          .delay("20")
+          .duration("200")
+          .attr("r", 10)
+          .style("opacity", 1); //0
+      });
   }
 
   function updateChart(data) {
-      const { yScale, xScale } = updateScales(data);
-      const line = createLine(xScale, yScale);
-      updateAxes(data, chart, xScale, yScale);
-      updatePath(data, line);
+    const {
+      yScale,
+      xScale
+    } = updateScales(data);
+    const line = createLine(xScale, yScale);
+    updateAxes(data, chart, xScale, yScale);
+    updatePath(data, line);
   }
 
   updateChart(data);
