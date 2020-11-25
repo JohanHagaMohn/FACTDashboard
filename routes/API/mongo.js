@@ -87,7 +87,7 @@ router.get("/tweets/count/date", async (req, res, next) => {
 router.get("/tweets/get", async (req, res, next) => {
   const response = await tweetCol.findOne({
 
-  },{
+  }, {
     skip: req.query.skip | 0//parseInt(Math.random() * 100)
   })
 

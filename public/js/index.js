@@ -5,6 +5,7 @@
   document.querySelector("#count").innerHTML = count.count;
 })();
 
+const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"><div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div></div>";
 let tweetDOMs = [];
 const options = {
   theme: "light",
@@ -16,20 +17,17 @@ const options = {
 
 async function addTweet(DOMelm) {
   let tweet = await $.get("./API/mongo/tweets/get?skip=" + parseInt(Math.random() * 199));
-  try {
-    twttr.widgets.createTweet(
-      tweet.id_str,
-      DOMelm,
-      options
-    )
-  } catch (err) {
-    console.log(err)
-  }
+  await twttr.widgets.createTweet(
+    tweet.id_str,
+    DOMelm,
+    options
+  )
+  DOMelm.removeChild(DOMelm.childNodes[0])
 }
 
 async function findTweets() {
   for(DOM of tweetDOMs) {
-    DOM.innerHTML = "";
+    DOM.innerHTML = loadingAnimation;
     addTweet(DOM)
   }
 }
@@ -42,6 +40,7 @@ async function findTweets() {
   for (let i = 0; i < nCols; i++) {
     let divElm = document.createElement("div")
     divElm.classList.add("col-sm")
+    divElm.innerHTML = loadingAnimation
     randTweet.appendChild(divElm)
     tweetDOMs.push(divElm)
   }
