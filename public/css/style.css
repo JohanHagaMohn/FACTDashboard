@@ -118,10 +118,8 @@ body {
 }
 
 .datapoint {
-  width: 45%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 2px solid #343a40;
+  width: 100%;
+  padding: 25px 0 25px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -129,12 +127,12 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-align: right;
+      -ms-flex-align: right;
+          align-items: right;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   vertical-align: middle;
 }
 
