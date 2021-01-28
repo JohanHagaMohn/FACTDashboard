@@ -9,16 +9,17 @@ const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"
 let tweetDOMs = [];
 const options = {
   theme: "light",
-  width: 350,
+  width: 330,
   align: "center",
   dnt: true,
   conversation: "none"
 }
 
-async function addTweet(DOMelm) {
-  let tweet = await $.get("./API/mongo/tweets/get?skip=" + parseInt(Math.random() * 199));
+async function addTweet(DOMelm, id) {
+  //let tweet = await $.get("./API/mongo/tweets/get?skip=" + parseInt(Math.random() * 199));
   await twttr.widgets.createTweet(
-    tweet.id_str,
+    /*tweet.id_str,*/
+    id,
     DOMelm,
     options
   )
@@ -26,9 +27,11 @@ async function addTweet(DOMelm) {
 }
 
 async function findTweets() {
+  tweets = ["1333397170414870528", "1340280153604284417", "997657383458562048"]
+  i = 0
   for (DOM of tweetDOMs) {
     DOM.innerHTML = loadingAnimation;
-    addTweet(DOM)
+    addTweet(DOM, tweets[i++])
   }
 }
 
@@ -45,8 +48,9 @@ async function findTweets() {
     tweetDOMs.push(divElm)
   }
 
-  await twttr.ready()
-  await findTweets()
+  twttr.ready(() => {
+    findTweets()
+  })
 })();
 
 async function lastWeekData() {
