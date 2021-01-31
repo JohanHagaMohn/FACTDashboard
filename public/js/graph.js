@@ -26,11 +26,7 @@
 
   const height = window.innerHeight * 0.78;
   const width = window.innerWidth * 0.78;
-<<<<<<< HEAD
   const radius = 6;
-=======
-  const radius = 4;
->>>>>>> caaefc5cf4f326644cd2eed740f8cb0fb08f1944
 
   const data = await $.getJSON("/API/neo4j/example");
 
