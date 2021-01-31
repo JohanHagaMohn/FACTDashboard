@@ -27,14 +27,14 @@
   const height = 400;
   const width = 600;
 
-  const data = await $.getJSON("/graph/test.json");
+  const data = await $.getJSON("/API/neo4j/example");
 
   const chart = () => {
-    const links = data.links.map(d => Object.create(d));
-    const nodes = data.nodes.map(d => Object.create(d));
+    const links = data.edges.map(d => Object.create(d));
+    const nodes = data.users.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
+        .force("link", d3.forceLink(links).id(d => d.id_str))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -56,11 +56,11 @@
       .data(nodes)
       .join("circle")
         .attr("r", 3)
-        .attr("fill", (d) => "blue")
+        .attr("fill", (d) => ((d.id_str == data.src) ? "green" : "blue"))
         .call(drag(simulation));
 
     node.append("title")
-        .text(d => d.id);
+        .text(d => d.name);
 
     simulation.on("tick", () => {
       link
