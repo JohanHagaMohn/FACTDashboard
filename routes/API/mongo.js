@@ -25,7 +25,7 @@ let userCol = null;
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {
-  assert.equal(null, err);
+  assert.strictEqual(null, err);
   console.log("Connected successfully to Mongo DB");
 
   db = client.db(dbName);
@@ -41,7 +41,7 @@ MongoClient.connect(url, function (err, client) {
 router.get("/tweets/count", (req, res, next) => {
   tweetCol.countDocuments({}, (err, r) => {
     assert.equal(null, err)
-    res.send({count: r})
+    res.send({ count: r })
   })
 })
 
@@ -57,7 +57,7 @@ function getRegexFromDate(d, m, y) {
 router.get("/tweets/count/date", async (req, res, next) => {
   // Validate request
 
-  if (!( req.query.d
+  if (!(req.query.d
     && req.query.d.match(/^[0-9]{1,2}$/)
     && req.query.m
     && req.query.m.match(/^[0-9]{1,2}$/)
@@ -78,8 +78,8 @@ router.get("/tweets/count/date", async (req, res, next) => {
       $regex: regexDate
     }
   }, (err, r) => {
-    assert.equal(null, err)
-    res.send({count: r})
+    assert.strictEqual(null, err)
+    res.send({ count: r })
   })
 })
 
