@@ -26,7 +26,11 @@
 
   const height = window.innerHeight * 0.78;
   const width = window.innerWidth * 0.78;
+<<<<<<< HEAD
+  const radius = 6;
+=======
   const radius = 4;
+>>>>>>> caaefc5cf4f326644cd2eed740f8cb0fb08f1944
 
   const data = await $.getJSON("/API/neo4j/example");
 
@@ -76,6 +80,21 @@
         .attr("y1", d => d.source.y)
         .attr("x2", d => d.target.x)
         .attr("y2", d => d.target.y);
+    });
+
+    var toRemove;
+    var tweet;
+    node.on('click', function () {
+      if (toRemove) {
+        d3.select(toRemove).transition().duration(350).attr("r", radius);
+        tweet.remove();
+      }
+      toRemove = this;
+      tweet = document.createElement("DIV");
+      tweet.id = "graphTweet";
+      d3.select(this).transition().duration(350).attr("r", radius * 3);
+      tweet.style.borderColor = d3.select(this).attr("fill");
+      document.getElementById("graphContainer").insertAdjacentElement("afterend", tweet);
     });
 
     //invalidation.then(() => simulation.stop());
