@@ -26,7 +26,7 @@
 
   const height = window.innerHeight * 0.78;
   const width = window.innerWidth * 0.78;
-  const radius = 3;
+  const radius = 4;
 
   const data = await $.getJSON("/API/neo4j/example");
 
@@ -35,7 +35,7 @@
     const nodes = data.users.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id_str))
+      .force("link", d3.forceLink(links).id(d => d.id_str).distance(4 * radius))
       .force("charge", d3.forceManyBody())
       .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -50,7 +50,7 @@
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("stroke-width", d => 0.5);
+      .attr("stroke-width", d => radius / 3);
 
     const node = svg.append("g")
       .attr("stroke", "#fff")
