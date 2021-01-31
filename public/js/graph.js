@@ -24,13 +24,7 @@
         .on("end", dragended);
   }
 
-  const color = (d) => {
-    //const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    //return d => scale(d.group);
-    return "red"
-  }
-
-  const height = 600;
+  const height = 400;
   const width = 600;
 
   const data = await $.getJSON("/graph/test.json");
@@ -53,16 +47,16 @@
       .selectAll("line")
       .data(links)
       .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", d => 0.5);
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1)
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-        .attr("r", 5)
-        .attr("fill", color)
+        .attr("r", 3)
+        .attr("fill", (d) => "blue")
         .call(drag(simulation));
 
     node.append("title")
