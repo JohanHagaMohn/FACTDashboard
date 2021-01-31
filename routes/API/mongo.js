@@ -13,7 +13,7 @@ const authMechanism = 'DEFAULT';
 const dbName = process.env.MONGO_DB_DBNAME;
 
 // Connection URL
-const url = `mongodb://${username}:${password}@${process.env.MONGO_DB_IP}:${process.env.MONGO_DB_PORT}/${dbName}?authMechanism=${authMechanism}`;
+const url = `mongodb://${username}:${password}@${process.env.MONGO_DB_IP}:${process.env.MONGO_DB_PORT}/${dbName}?authMechanism=${authMechanism}&useUnifiedTopology=true`;
 
 // The database instance
 let db = null;
