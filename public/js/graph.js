@@ -1,4 +1,4 @@
-(async function() {
+(async function () {
   const drag = simulation => {
 
     function dragstarted(event) {
@@ -19,13 +19,14 @@
     }
 
     return d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended);
   }
 
-  const height = 400;
-  const width = 600;
+  const height = window.innerHeight * 0.78;
+  const width = window.innerWidth * 0.78;
+  const radius = 3;
 
   const data = await $.getJSON("/graph/test.json");
 
@@ -34,44 +35,47 @@
     const nodes = data.nodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+      .force("link", d3.forceLink(links).id(d => d.id))
+      .force("charge", d3.forceManyBody())
+      .force("center", d3.forceCenter(width / 2, height / 2));
 
     const svg = d3.create("svg")
-        .attr("viewBox", [0, 0, width, height]);
+      .attr("height", "100%")
+      .attr("width", "100%")
+      .attr("viewBox", [0, 0, width, height]);
 
     const link = svg.append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
+      .attr("stroke", "#999")
+      .attr("stroke-opacity", 0.6)
       .selectAll("line")
       .data(links)
       .join("line")
-        .attr("stroke-width", d => 0.5);
+      .attr("stroke-width", d => 0.5);
 
     const node = svg.append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1)
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-        .attr("r", 3)
-        .attr("fill", (d) => "blue")
-        .call(drag(simulation));
+      .attr("r", radius)
+      .attr("fill", (d) => "blue")
+      .call(drag(simulation));
 
     node.append("title")
-        .text(d => d.id);
+      .text(d => d.id);
 
     simulation.on("tick", () => {
-      link
-          .attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
 
       node
-          .attr("cx", d => d.x)
-          .attr("cy", d => d.y);
+        .attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+        .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
     });
 
     //invalidation.then(() => simulation.stop());
@@ -80,6 +84,9 @@
   }
 
   let divElm = document.getElementById("graphContainer")
+  divElm.style.height = "78vh";
+  divElm.style.width = "auto";
+  divElm.style.maxWidth = "100%";
   divElm.appendChild(chart())
 
 })();
