@@ -13,6 +13,17 @@
   }
 }
 
+#graphTweet {
+  height: 30%;
+  width: 50%;
+  position: absolute;
+  top: 35%;
+  left: 25%;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+}
+
 body {
   font-size: .875rem;
 }
