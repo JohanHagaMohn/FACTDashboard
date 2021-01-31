@@ -12,3 +12,5 @@ neo4j-admin load --from=/home/Archive.zip --database=test --force
 
 Før neste møte:
 minne på neo4j database
+
+https://d3-wiki.readthedocs.io/zh_CN/master/
