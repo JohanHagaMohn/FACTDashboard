@@ -83,34 +83,55 @@
 
     const container = document.getElementById("graphContainer");
 
-
-
-    node.on('click', function (a, b) {
-      console.log(b.id_str);
-      if (toRemove) {
-        d3.select(toRemove).transition().duration(350).attr("r", radius);
-        tweet.remove();
-      }
-      toRemove = this;
-      tweet = document.createElement("DIV");
-      tweet.id = "graphTweet";
-      d3.select(this).transition().duration(350).attr("r", radius * 3);
-      tweet.style.borderColor = d3.select(this).attr("fill");
-      tweet.style.zIndex = "-1";
-      container.insertAdjacentElement("afterend", tweet);
-      console.log("hi");
-      setTimeout(() => {
-        container.addEventListener('click', function remover() {
+    twttr.ready(() => {
+      node.on('click', function (a, n) {
+        if (toRemove) {
           d3.select(toRemove).transition().duration(350).attr("r", radius);
-          tweet.style.opacity = 0;
-          setTimeout(() => {
-            tweet.remove();
-          }, 300);
-          toRemove = null;
-          container.removeEventListener('click', remover);
-        })
-      }, 200);
-    });
+          tweet.remove();
+        }
+        toRemove = this;
+        tweet = document.createElement("DIV");
+
+        const options = {
+          theme: "light",
+          width: 330,
+          align: "center",
+          dnt: true,
+          conversation: "none"
+        }
+
+        console.log(n.status.id_str)
+
+        try {
+          twttr.widgets.createTweet(
+            /*tweet.id_str,*/
+            n.status.id_str,
+            tweet,
+            options
+          )
+        } catch (e) {
+          console.log(e)
+          console.log(n)
+        }
+
+        tweet.id = "graphTweet";
+        d3.select(this).transition().duration(350).attr("r", radius * 3);
+        tweet.style.borderColor = d3.select(this).attr("fill");
+        tweet.style.zIndex = "-1";
+        container.insertAdjacentElement("afterend", tweet);
+        setTimeout(() => {
+          container.addEventListener('click', function remover() {
+            d3.select(toRemove).transition().duration(350).attr("r", radius);
+            tweet.style.opacity = 0;
+            setTimeout(() => {
+              tweet.remove();
+            }, 300);
+            toRemove = null;
+            container.removeEventListener('click', remover);
+          })
+        }, 200);
+      });
+    })
 
     //invalidation.then(() => simulation.stop());
 
