@@ -21,6 +21,8 @@
   border-radius: 10px;
   border-width: 2px;
   border-style: solid;
+  transition: all 200ms ease;
+  z-index: 1;
 }
 
 body {
