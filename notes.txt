@@ -14,3 +14,6 @@ Før neste møte:
 minne på neo4j database
 
 https://d3-wiki.readthedocs.io/zh_CN/master/
+
+DROPPED OF HERE:
+https://neo4j.com/developer/javascript/
