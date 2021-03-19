@@ -107,16 +107,28 @@
   ],
   "users": [{
     "id_str": "2828483761",
-    "name": "Not found"
+    "name": "Not found",
+    "screen_name": "Not found",
+    "description": "Not found",
+    "created_at": "Not found"
   }, {
     "id_str": "845599446259961856",
-    "name": "Not found"
+    "name": "Not found",
+    "screen_name": "Not found",
+    "description": "Not found",
+    "created_at": "Not found"
   }, {
     "id_str": "158838519",
-    "name": "Not found"
+    "name": "Not found",
+    "screen_name": "Not found",
+    "description": "Not found",
+    "created_at": "Not found"
   }, {
     "id_str": "2582911872",
-    "name": "Not found"
+    "name": "Not found",
+    "screen_name": "Not found",
+    "description": "Not found",
+    "created_at": "Not found"
   }, {
     "id": 442815399,
     "id_str": "442815399",
