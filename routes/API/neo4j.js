@@ -24,8 +24,24 @@ router.get("/example", async (req, res, next) => {
 })
 
 router.get("/example2", async (req, res, next) => {
-  const result = await session.run('MATCH (n:tweet)-[r:retweet]->() RETURN *')
-  res.json(result)
+  const nodes = await session.run('MATCH (n:tweet) RETURN n')
+  const edges = await session.run('MATCH ()-[r:retweet]->() RETURN r')
+
+  let retNodes = []
+  for (let node of nodes.records) {
+    retNodes.push(node._fields[0])
+  }
+
+  let retEdges = []
+  for (let node of edges.records) {
+    retEdges.push(node._fields[0])
+  }
+
+  res.json({
+    src: "738326833431732225",
+    nodes: retNodes,
+    edges: retEdges
+  })
 })
 
 router.get("/setup", async (req, res, next) => {

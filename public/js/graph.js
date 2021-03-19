@@ -28,14 +28,22 @@
   const width = window.innerWidth * 0.78;
   const radius = 6;
 
-  const data = await $.getJSON("/API/neo4j/example");
+  const neo4jData = await $.getJSON("/API/neo4j/example2");
+
+  let edges = []
+  for(let edge of neo4jData.edges) {
+    edges.push({
+      source: edge.start.low,
+      target: edge.end.low
+    })
+  }
 
   const chart = () => {
-    const links = data.edges.map(d => Object.create(d));
-    const nodes = data.users.map(d => Object.create(d));
+    const links = edges.map(d => Object.create(d));
+    const nodes = neo4jData.nodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id_str).distance(4 * radius))
+      .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
       .force("charge", d3.forceManyBody())
       .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -59,7 +67,7 @@
       .data(nodes)
       .join("circle")
       .attr("r", radius)
-      .attr("fill", (d) => ((d.id_str == data.src) ? "green" : "blue"))
+      .attr("fill", (d) => ((d.properties.id_str == neo4jData.src) ? "green" : "blue"))
       .call(drag(simulation));
 
     node.append("title")
@@ -100,12 +108,12 @@
           conversation: "none"
         }
 
-        console.log(n.status.id_str)
+        console.log(n.properties.id_str)
 
         try {
           twttr.widgets.createTweet(
             /*tweet.id_str,*/
-            n.status.id_str,
+            n.properties.id_str,
             tweet,
             options
           )
