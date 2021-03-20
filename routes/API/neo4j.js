@@ -44,15 +44,31 @@ router.get("/example2", async (req, res, next) => {
   })
 })
 
+const neo4jDataToInsert = require('./neo4jTestData/out.json');
+
 router.get("/setup", async (req, res, next) => {
-  res.send("hello")
-  for (let i = 0; i < data.users.length; i++) {
-    const result = await session.run("CREATE (n:tweet {id_str: $id_str, name: $name, screen_name: $screen_name, description: $description, created_at: $created_at}) RETURN n", data.users[i])
+  for (user of neo4jDataToInsert.users) {
+
+    if (!user.status) {
+      user.status = {
+        full_text: "No tweet",
+        created_at: "No tweet"
+      }
+    }
+
+    const result = await session.run("CREATE (n:tweet {id_str: $id_str, name: $name, screen_name: $screen_name, full_text: $full_text, created_at: $created_at}) RETURN n", {
+      name: user.name,
+      screen_name: user.screen_name,
+      id_str: user.id_str,
+      full_text: user.status.full_text,
+      created_at: user.status.created_at
+    })
   }
 
-  for(let edge of data.edges) {
+  for(let edge of neo4jDataToInsert.edges) {
     const result = await session.run("MATCH (a:tweet {id_str: $source}) MATCH (b:tweet {id_str: $target}) CREATE (a)-[:retweet]->(b)", edge)
   }
+  res.send("finished")
 })
 
 module.exports = router;

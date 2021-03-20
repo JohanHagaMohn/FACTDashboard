@@ -108,7 +108,7 @@
           conversation: "none"
         }
 
-        console.log(n.properties.id_str)
+        console.log(n.properties)
 
         try {
           twttr.widgets.createTweet(
