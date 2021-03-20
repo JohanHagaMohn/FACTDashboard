@@ -17,9 +17,17 @@ try {
   console.log(err)
 }
 
+router.get("/tweetSpread", async (req, res, next) => {
+  const result = await session.run('MATCH (u:user {id_str: $id_str}) CALL apoc.path.subgraphAll(u, {relationshipFilter: "FOLLOW", nodeFiler: "user"}) YIELD nodes, relationships RETURN nodes, relationships;', {
+    id_str: res.query.id_str
+  })
+
+  res.send(result)
+})
+
 router.get("/example2", async (req, res, next) => {
-  const nodes = await session.run('MATCH (n:tweet) RETURN n')
-  const edges = await session.run('MATCH ()-[r:retweet]->() RETURN r')
+  const nodes = await session.run('MATCH (n:user) RETURN n')
+  const edges = await session.run('MATCH ()-[r:FOLLOW]->() RETURN r')
 
   let retNodes = []
   for (let node of nodes.records) {

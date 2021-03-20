@@ -3,7 +3,7 @@ import os
 import json
 from neo4j import GraphDatabase
 
-URI      = "neo4j://192.168.99.100:7687"
+URI      = "neo4j://localhost:7687"
 USERNAME = "neo4j"
 PASSWORD = "s3cr3t"
 
@@ -21,22 +21,40 @@ class neo4jClient:
         with self.driver.session() as session:
             session.run(query, data)
 
-    def addUser(self, tweet):
+    def addTweet(self, tweet):
         with self.driver.session() as session:
             result = session.run("MATCH (n:tweet {id_str:$id_str}) RETURN n", id_str=tweet["id_str"])
             if result.single() == None:
-
-                if (not ("status" in tweet)):
-                    tweet["status"] = {
-                        "full_text": "Not found",
-                        "created_at": "Not found"
-                    }
-                session.run("CREATE (n:tweet {id_str: $id_str, name: $name, full_text: $full_text, created_at: $created_at})", {
+                session.run("CREATE (n:tweet {id_str: $id_str, full_text: $full_text, created_at: $created_at})", {
                     "id_str": tweet["id_str"],
-                    "full_text": tweet["status"]["full_text"],
-                    "name": tweet["name"],
-                    "created_at": tweet["status"]["created_at"]
+                    "full_text": tweet["full_text"],
+                    "created_at": tweet["created_at"]
                 })
+
+    def addUser(self, user):
+        with self.driver.session() as session:
+            result = session.run("MATCH (n:user {id_str:$id_str}) RETURN n", id_str=user["id_str"])
+            if result.single() == None:
+
+                profile_image = ""
+                if ("profile_image_url_https" in user["status"]):
+                    profile_image = user["status"]["profile_image_url_https"]
+
+                session.run("CREATE (n:user {id_str: $id_str, name: $name, created_at: $created_at, full_text: $full_text, profile_image_url_https: $profile_image_url_https})", {
+                    "id_str": user["id_str"],
+                    "name": user["name"],
+                    "created_at": user["created_at"],
+                    "full_text": user["status"]["full_text"],
+                    "profile_image_url_https": profile_image
+                })
+
+                # if ("status" in user):
+                #     self.addTweet(user["status"])
+                #
+                #     self.query("MATCH (u:user {id_str: $uid_str}) MATCH (t:tweet {id_str: $tid_str}) CREATE (u)-[:tweeted]->(t)", {
+                #         "uid_str": user["id_str"],
+                #         "tid_str": user["status"]["id_str"]
+                #     })
 
 def findDirs(dirpath):
     dirs = []
@@ -66,24 +84,46 @@ def findRetweetTimes(CSVfile):
 
     return ret
 
+def addUserData(client, file):
+    with open('tmp.json', encoding="utf-8") as json_file:
+        tweetData = json.load(json_file)
+
+        for tweet in tweetData:
+            client.addUser(tweet)
+
 def main():
     client = neo4jClient(URI, USERNAME, PASSWORD)
 
     # Delete all data
     client.query("MATCH (n) DETACH DELETE n")
 
+    createJSONFile("./1099560067370704896/users.json", "tmp.json")
+    addUserData(client, "tmp.json")
+    os.remove("tmp.json")
+
+    with open("./1099560067370704896/edges.csv", "r", encoding="utf-8") as edges:
+
+        for i, edge in enumerate(edges.readlines()):
+            if (i > 0):
+                split = edge.split(",")
+                src = split[0]
+                trg = split[1][:-1]
+
+                client.query("MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)", {
+                    "src": src,
+                    "trg": trg
+                })
+
+    client.close()
+
+
+def fromFolder(client):
+
     for dir in findDirs(PATH):
         createJSONFile(PATH + dir + "/users.json", "tmp.json")
-
-        with open('tmp.json', encoding="utf-8") as json_file:
-            tweetData = json.load(json_file)
-
-            for tweet in tweetData:
-                client.addUser(tweet)
+        addUserData(client, "tmp.json")
 
         os.remove("tmp.json")
-
-        retweetTimes = findRetweetTimes(PATH + dir + "/nodes.csv")
 
         with open(PATH + dir + "/edges.csv", "r", encoding="utf-8") as edges:
 
@@ -93,17 +133,12 @@ def main():
                     src = split[0]
                     trg = split[1][:-1]
 
-                    time = retweetTimes[src]
-
-                    client.query("MATCH (a:tweet {id_str: $src}) MATCH (b:tweet {id_str: $trg}) CREATE (a)-[:retweet {time:$time}]->(b)", {
+                    client.query("MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)", {
                         "src": src,
-                        "trg": trg,
-                        "time": time
+                        "trg": trg
                     })
 
         break
-
-    client.close()
 
 if __name__ == "__main__":
     main()
