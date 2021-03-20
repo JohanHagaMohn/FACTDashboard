@@ -36,16 +36,12 @@ class neo4jClient:
             result = session.run("MATCH (n:user {id_str:$id_str}) RETURN n", id_str=user["id_str"])
             if result.single() == None:
 
-                profile_image = ""
-                if ("profile_image_url_https" in user["status"]):
-                    profile_image = user["status"]["profile_image_url_https"]
-
                 session.run("CREATE (n:user {id_str: $id_str, name: $name, created_at: $created_at, full_text: $full_text, profile_image_url_https: $profile_image_url_https})", {
                     "id_str": user["id_str"],
                     "name": user["name"],
                     "created_at": user["created_at"],
                     "full_text": user["status"]["full_text"],
-                    "profile_image_url_https": profile_image
+                    "profile_image_url_https": user["profile_image_url_https"]
                 })
 
                 # if ("status" in user):
