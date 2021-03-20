@@ -12,17 +12,97 @@
     font-size: 3.5rem;
   }
 }
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  nav {
+    flex: 0 1 auto;
+  }
+  .container-fluid {
+    flex: 1 1 auto;
+    .row {
+      height: 100%;
+    }
+  }
+}
+
+main {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  * {
+    flex: 0 1 auto;
+  }
+}
+
+
 #graphTweet {
-  height: 30%;
-  width: 50%;
-  position: absolute;
-  top: 35%;
-  left: 25%;
+  margin: 2vh auto 2vh auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 25vh;
+  flex: 1 1 auto;
+  width: 50vw;
   border-radius: 10px;
-  border-width: 2px;
+  border-width: 1px;
+  border-color: #dee2e6;
+  flex-basis: fill;
   border-style: solid;
   transition: all 200ms ease;
-  z-index: 1;
+  #tweetTop {
+    height: 35%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 15px 15px 15px 15px;
+    #tweetLogo {
+      width: 5vh;
+      height: 5vh;
+      flex-grow: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      #twitterLogo {
+        height: 2.5vh;
+        width: 2.5vh;
+        filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
+      }
+    }
+    #tweetProfileImage {
+      width: 5vh;
+      height: 5vh;
+      flex-grow: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      &:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        width: 5vh;
+        height: 5vh;
+        background-color: white;
+        border: 1px solid #dee2e6;
+      }
+    }
+    #tweetUser {
+      flex-grow: 7;
+    }
+  }
+  #tweetMessage {
+    height: 45%;
+  }
+  #tweetDetails {
+    height: 10%;
+    margin: 0 15px 0 15px; 
+  }
+  #tweetReactions {
+    height: 10%
+  }
 }
 
 body {

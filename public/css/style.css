@@ -13,18 +13,164 @@
   }
 }
 
+body {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body nav {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+}
+
+body .container-fluid {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+
+body .container-fluid .row {
+  height: 100%;
+}
+
+main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main * {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+}
+
 #graphTweet {
-  height: 30%;
-  width: 50%;
-  position: absolute;
-  top: 35%;
-  left: 25%;
+  margin: 2vh auto 2vh auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 25vh;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  width: 50vw;
   border-radius: 10px;
-  border-width: 2px;
+  border-width: 1px;
+  border-color: #dee2e6;
+  -ms-flex-preferred-size: fill;
+      flex-basis: fill;
   border-style: solid;
   -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
-  z-index: 1;
+}
+
+#graphTweet #tweetTop {
+  height: 35%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 15px 15px 15px 15px;
+}
+
+#graphTweet #tweetTop #tweetLogo {
+  width: 5vh;
+  height: 5vh;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+#graphTweet #tweetTop #tweetLogo #twitterLogo {
+  height: 2.5vh;
+  width: 2.5vh;
+  -webkit-filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
+          filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
+}
+
+#graphTweet #tweetTop #tweetProfileImage {
+  width: 5vh;
+  height: 5vh;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50%;
+}
+
+#graphTweet #tweetTop #tweetProfileImage:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  width: 5vh;
+  height: 5vh;
+  background-color: white;
+  border: 1px solid #dee2e6;
+}
+
+#graphTweet #tweetTop #tweetUser {
+  -webkit-box-flex: 7;
+      -ms-flex-positive: 7;
+          flex-grow: 7;
+}
+
+#graphTweet #tweetMessage {
+  height: 45%;
+}
+
+#graphTweet #tweetDetails {
+  height: 10%;
+  margin: 0 15px 0 15px;
+}
+
+#graphTweet #tweetReactions {
+  height: 10%;
 }
 
 body {
