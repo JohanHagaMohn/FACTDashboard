@@ -39,9 +39,10 @@ class neo4jClient:
             result = session.run("MATCH (n:user {id_str:$id_str}) RETURN n", id_str=user["id_str"])
             if result.single() == None:
 
-                session.run("CREATE (n:user {id_str: $id_str, name: $name, created_at: $created_at, full_text: $full_text, profile_image_url_https: $profile_image_url_https})", {
+                session.run("CREATE (n:user {id_str: $id_str, name: $name, screen_name: $screen_name, created_at: $created_at, full_text: $full_text, profile_image_url_https: $profile_image_url_https})", {
                     "id_str": user["id_str"],
                     "name": user["name"],
+                    "screen_name": user["screen_name"],
                     "created_at": user["status"]["created_at"],
                     "full_text": user["status"]["full_text"],
                     "profile_image_url_https": user["profile_image_url_https"]
