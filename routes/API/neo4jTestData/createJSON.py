@@ -20,10 +20,26 @@ def main():
 
     data = {}
 
+    data["src"] = tweet
+
     with open('tmp.json', encoding="utf-8") as json_file:
         data["users"] = json.load(json_file)
 
     os.remove("tmp.json")
+
+    with open('./Archive/' + tweet + '/edges.csv', encoding="utf-8") as edges_file:
+        data["edges"] = []
+
+        i = 0
+        for line in edges_file.readlines():
+            if (i > 0):
+                split = line.split(",")
+                data["edges"].append({
+                    "source": split[0],
+                    "target": split[1][:-1]
+                })
+
+            i += 1
 
     with open('out.json', 'w', encoding='utf-8') as outFile:
         json.dump(data, outFile)
