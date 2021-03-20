@@ -2,10 +2,13 @@ import sys
 import os
 import json
 from neo4j import GraphDatabase
+from dotenv import load_dotenv
 
-URI      = "neo4j://localhost:7687"
-USERNAME = "neo4j"
-PASSWORD = "s3cr3t"
+load_dotenv(dotenv_path="../../../.env")
+
+URI      = os.getenv("NEO4J_DB_URI")
+USERNAME = os.getenv("NEO4J_DB_USERNAME")
+PASSWORD = os.getenv("NEO4J_DB_PASSWORD")
 
 PATH = "./Archive/"
 
