@@ -99,7 +99,7 @@ main * {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  padding: 15px 15px 15px 15px;
+  padding: 15px 15px 10px 15px;
 }
 
 #graphTweet #tweetTop #tweetLogo {
@@ -120,8 +120,8 @@ main * {
 }
 
 #graphTweet #tweetTop #tweetLogo #twitterLogo {
-  height: 2.5vh;
-  width: 2.5vh;
+  height: 3vh;
+  width: 3vh;
   -webkit-filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
           filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
 }
@@ -158,19 +158,68 @@ main * {
   -webkit-box-flex: 7;
       -ms-flex-positive: 7;
           flex-grow: 7;
+  margin: 0 0 0 5px;
+}
+
+#graphTweet #tweetTop #tweetUser #tweetUsername {
+  color: #14171a;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18.375px;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+  text-align: start;
+  margin: 0 0 2px 0;
+  z-index: 1;
+}
+
+#graphTweet #tweetTop #tweetUser #tweetUsername:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#graphTweet #tweetTop #tweetUser #tweetTag {
+  font-size: 12px;
+  font-weight: 400;
+  color: #657786;
 }
 
 #graphTweet #tweetMessage {
-  height: 45%;
-}
-
-#graphTweet #tweetDetails {
-  height: 10%;
+  height: 35%;
+  font-size: 14px;
+  line-height: 18.375px;
+  white-space: pre-wrap;
+  color: #14171a;
+  cursor: text;
+  overflow-wrap: break-word;
   margin: 0 15px 0 15px;
 }
 
+#graphTweet #tweetDetails {
+  height: 15%;
+  margin: 0 15px 0 15px;
+  z-index: 1;
+}
+
+#graphTweet #tweetDetails:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#graphTweet #tweetDetails #tweetTime {
+  font-size: 14px;
+  color: #657786;
+  font-weight: 400;
+  z-index: 1;
+}
+
+#graphTweet #tweetDetails #tweetTime:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 #graphTweet #tweetReactions {
-  height: 10%;
+  height: 15%;
 }
 
 body {

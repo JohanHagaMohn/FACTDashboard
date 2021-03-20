@@ -57,7 +57,7 @@ main {
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
-    padding: 15px 15px 15px 15px;
+    padding: 15px 15px 10px 15px;
     #tweetLogo {
       width: 5vh;
       height: 5vh;
@@ -66,8 +66,8 @@ main {
       align-items: flex-start;
       justify-content: flex-end;
       #twitterLogo {
-        height: 2.5vh;
-        width: 2.5vh;
+        height: 3vh;
+        width: 3vh;
         filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
       }
     }
@@ -91,17 +91,61 @@ main {
     }
     #tweetUser {
       flex-grow: 7;
+      margin: 0 0 0 5px;
+      #tweetUsername {
+        &:hover {
+          cursor: pointer;  
+          text-decoration: underline;
+        }
+        color: rgb(20, 23, 26);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18.375px;
+        overflow-wrap: break-word;
+        white-space: nowrap;
+        text-align: start;
+        margin: 0 0 2px 0;
+        z-index: 1;
+      }
+      #tweetTag {
+        font-size: 12px;
+        font-weight: 400;
+        color: rgb(101, 119, 134);
+      }
     }
   }
   #tweetMessage {
-    height: 45%;
+    height: 35%;
+    font-size: 14px;
+    line-height: 18.375px;
+    white-space: pre-wrap;
+    color: rgb(20, 23, 26);
+    cursor: text;
+    overflow-wrap: break-word;
+    margin: 0 15px 0 15px;
   }
   #tweetDetails {
-    height: 10%;
-    margin: 0 15px 0 15px; 
+    height: 15%;
+    margin: 0 15px 0 15px;
+    z-index: 1;
+    &:hover {
+      cursor: pointer;  
+      text-decoration: underline;
+    }
+    #tweetTime {
+      font-size: 14px;
+      color: rgb(101, 119, 134);
+      font-weight: 400;
+      z-index: 1;
+      &:hover {
+        cursor: pointer;  
+        text-decoration: underline;
+      }
+    } 
+
   }
   #tweetReactions {
-    height: 10%
+    height: 15%
   }
 }
 
