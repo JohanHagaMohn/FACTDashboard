@@ -185,10 +185,11 @@ main * {
 }
 
 #graphTweet #tweetMessage {
-  height: 35%;
+  height: 50%;
   font-size: 14px;
   line-height: 18.375px;
   white-space: pre-wrap;
+  overflow-y: scroll;
   color: #14171a;
   cursor: text;
   overflow-wrap: break-word;
@@ -216,10 +217,6 @@ main * {
 #graphTweet #tweetDetails #tweetTime:hover {
   cursor: pointer;
   text-decoration: underline;
-}
-
-#graphTweet #tweetReactions {
-  height: 15%;
 }
 
 body {

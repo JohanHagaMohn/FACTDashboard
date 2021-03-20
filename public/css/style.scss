@@ -115,10 +115,11 @@ main {
     }
   }
   #tweetMessage {
-    height: 35%;
+    height: 50%;
     font-size: 14px;
     line-height: 18.375px;
     white-space: pre-wrap;
+    overflow-y: scroll;
     color: rgb(20, 23, 26);
     cursor: text;
     overflow-wrap: break-word;
@@ -144,9 +145,7 @@ main {
     } 
 
   }
-  #tweetReactions {
-    height: 15%
-  }
+  
 }
 
 body {
