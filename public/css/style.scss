@@ -119,7 +119,6 @@ main {
     font-size: 14px;
     line-height: 18.375px;
     white-space: pre-wrap;
-    overflow-y: scroll;
     color: rgb(20, 23, 26);
     cursor: text;
     overflow-wrap: break-word;
@@ -127,7 +126,7 @@ main {
   }
   #tweetDetails {
     height: 15%;
-    margin: 0 15px 0 15px;
+    margin: 0 15px 5px 15px;
     z-index: 1;
     &:hover {
       cursor: pointer;  
@@ -218,6 +217,9 @@ body {
   text-transform: uppercase;
 }
 
+circle:hover{
+  cursor: pointer;
+}
 /*
  * Navbar
  */
