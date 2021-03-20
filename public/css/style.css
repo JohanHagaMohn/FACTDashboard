@@ -189,7 +189,6 @@ main * {
   font-size: 14px;
   line-height: 18.375px;
   white-space: pre-wrap;
-  overflow-y: scroll;
   color: #14171a;
   cursor: text;
   overflow-wrap: break-word;
@@ -198,7 +197,7 @@ main * {
 
 #graphTweet #tweetDetails {
   height: 15%;
-  margin: 0 15px 0 15px;
+  margin: 0 15px 5px 15px;
   z-index: 1;
 }
 
@@ -290,6 +289,10 @@ body {
 .sidebar-heading {
   font-size: .75rem;
   text-transform: uppercase;
+}
+
+circle:hover {
+  cursor: pointer;
 }
 
 /*

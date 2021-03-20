@@ -26,7 +26,7 @@
 
   const height = window.innerHeight * 0.78;
   const width = window.innerWidth * 0.78;
-  const radius = 6;
+  const radius = 8;
 
   const neo4jData = await $.getJSON("/API/neo4j/example2");
 
@@ -120,13 +120,13 @@
           return s && s[0].toUpperCase() + s.slice(1);
         }
 
-        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${n.properties.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${n.properties.name}</h6><h6 id="tweetTag">@${n.properties.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${n.properties.full_text}</div><div id="tweetDetails" class="border-bottom"><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${k.getMinutes()} ${noon} · ${capitalize(k.toLocaleString('default', { month: 'short' }))}, ${k.getFullYear()}</a></div >`;
+        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${n.properties.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${n.properties.name}</h6><h6 id="tweetTag">@${n.properties.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${n.properties.full_text.replace(/(^[ \t]*\n)/gm, "")}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${k.getMinutes()} ${noon} · ${capitalize(k.toLocaleString('default', { month: 'short' }))}, ${k.getFullYear()}</a></div >`;
 
         console.log(n)
         console.log(n.properties.id_str)
 
         tweet.id = "graphTweet";
-        d3.select(this).transition().duration(350).attr("r", radius * 3);
+        d3.select(this).transition().duration(350).attr("r", radius * 2.5);
         tweet.style.zIndex = "-1";
         container.insertAdjacentElement("afterend", tweet);
         setTimeout(() => {
