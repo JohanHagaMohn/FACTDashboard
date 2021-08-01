@@ -119,9 +119,9 @@
         function capitalize(s) {
           return s && s[0].toUpperCase() + s.slice(1);
         }
+        minutes = k.getMinutes() > 9 ? k.getMinutes() : "0" + k.getMinutes();
 
-        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${n.properties.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${n.properties.name}</h6><h6 id="tweetTag">@${n.properties.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${n.properties.full_text.replace(/(^[ \t]*\n)/gm, "")}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${k.getMinutes()} ${noon} · ${capitalize(k.toLocaleString('default', { month: 'short' }))}, ${k.getFullYear()}</a></div >`;
-
+        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${n.properties.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${n.properties.name}</h6><h6 id="tweetTag">@${n.properties.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${n.properties.full_text.replace(/(^[ \t]*\n)/gm, "")}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(k)}, ${k.getFullYear()}</a></div >`;
         console.log(n)
         console.log(n.properties.id_str)
 
