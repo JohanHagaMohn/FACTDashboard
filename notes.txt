@@ -1,4 +1,7 @@
-ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.48.126.185
+npm run mongo # Starts Mongo connection
+npm run setup # Imports data to neo4j and mongo
+
+ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.49.158.30
 
 https://neo4j.com/developer/docker/
 docker run -p7474:7474 -p7687:7687 -e NEO4J_AUTH=neo4j/s3cr3t neo4j

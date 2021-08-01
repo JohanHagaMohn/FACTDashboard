@@ -6,7 +6,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "start ./routes/API/neo4jTestData/setup.sh",
+    "mongo": "ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.49.158.30"
   },
   "repository": {
     "type": "git",

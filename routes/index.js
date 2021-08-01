@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-const mongoAPI = require("./API/mongo")
-router.use("/API/mongo", mongoAPI);
+// const mongoAPI = require("./API/mongo")
+// router.use("/API/mongo", mongoAPI);
+//
+// const neo4jAPI = require("./API/neo4j")
+// router.use("/API/neo4j", neo4jAPI);
 
-const neo4jAPI = require("./API/neo4j")
-router.use("/API/neo4j", neo4jAPI);
+const api = require("./API/api.js")
+router.use("/API/", api)
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
