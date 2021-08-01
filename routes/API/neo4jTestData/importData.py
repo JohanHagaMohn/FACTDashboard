@@ -12,6 +12,9 @@ PASSWORD = os.getenv("NEO4J_DB_PASSWORD")
 
 PATH = "./Archive/"
 
+from importMongo import mongoConnect
+print(mongoConnect())
+
 class neo4jClient:
 
     def __init__(self, uri, user, password):
