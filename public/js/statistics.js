@@ -62,7 +62,7 @@ async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];
 
   for (let i = 0; i < 7; i++) {
-    pData[i] = api.countTweetsByDate(2020, 8, (i + 11));
+    pData[i] = api.countTweetsByDate(2020, 6, (i + 19));
   }
 
   let data = await Promise.all(pData)
