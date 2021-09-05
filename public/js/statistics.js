@@ -1,7 +1,7 @@
 /* globals Chart:false, feather:false */
 
 (async function () {
-  let count = await $.get("./API/tweets/count");
+  let count = await api.countTweets();
   document.querySelector("#count").innerHTML = count.count;
 })();
 
@@ -57,7 +57,7 @@ async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];
 
   for (let i = 0; i < 7; i++) {
-    pData[i] = $.get("./API/tweets/count/date?y=2020&m=8&d=" + (i + 11));
+    pData[i] = api.countTweetsByDate(2020, 8, (i + 11));
   }
 
   let data = await Promise.all(pData)

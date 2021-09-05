@@ -28,7 +28,7 @@
   const width = window.innerWidth * 0.78;
   const radius = 8;
 
-  const neo4jData = await $.getJSON("/API/followernetwork");
+  const neo4jData = await api.getFollowernetwork();
 
   let edges = []
   for (let edge of neo4jData.edges) {
