@@ -105,11 +105,9 @@ def findRetweetTimes(CSVfile):
 def addUserData(client, mongo, file):
     with open("tmp.json", encoding="utf-8") as json_file:
         tweetData = json.load(json_file)
-        i = 0
         for tweet in tweetData:
             client.addUser(tweet)
-            mongo.addUser(tweet, i)
-            i += 1
+            mongo.addUser(tweet)
 
 
 def main():

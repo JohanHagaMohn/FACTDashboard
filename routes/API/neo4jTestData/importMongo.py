@@ -17,17 +17,16 @@ class mongo:
         client = MongoClient(self.DBURL)
         print("Connected successfully to Mongo DB")
         self.DB = client[self.DBNAME]
-
-        # print(DB.tweets.find_one({}))
-
-    def addUser(self, tweet, num):
-        # print(self.DB.tweets.find_one({}))
         self.DB.tweets.remove({})
         self.DB.users.remove({})
+        # print(DB.tweets.find_one({}))
+
+    def addUser(self, tweet):
+        # print(self.DB.tweets.find_one({}))
         res1 = self.DB.tweets.insert_one(tweet["status"])
         del tweet["status"]
         self.DB.users.insert_one(tweet)
-        print(num, res1.inserted_id, self.DB.tweets.count_documents({}))
+        print(res1.inserted_id, self.DB.tweets.count_documents({}))
 
 
 # mongoConnect()
