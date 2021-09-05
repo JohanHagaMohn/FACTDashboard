@@ -44,5 +44,6 @@ module.exports = {
     users: usersCol
   },
   countTweets,
+  countUsers,
   getTweet
 }
