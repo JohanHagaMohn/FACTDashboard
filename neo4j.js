@@ -13,3 +13,13 @@ try {
   console.warn("Failed to connect to Neo4j")
   console.log(err)
 }
+
+async function query() {
+  await session.run(query)
+}
+
+module.exports = {
+  driver,
+  session,
+
+}
