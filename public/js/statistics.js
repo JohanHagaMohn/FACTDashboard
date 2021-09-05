@@ -2,7 +2,12 @@
 
 (async function () {
   let count = await api.countTweets();
-  document.querySelector("#count").innerHTML = count.count;
+  document.querySelector("#tweetCount").innerHTML = count.count;
+})();
+
+(async function () {
+  let count = await api.countUsers();
+  document.querySelector("#usersCount").innerHTML = count.count;
 })();
 
 const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"><div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div></div>";
