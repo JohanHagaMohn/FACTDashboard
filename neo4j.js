@@ -14,12 +14,12 @@ try {
   console.log(err)
 }
 
-async function query() {
-  await session.run(query)
+async function query(query, params) {
+  return await session.run(query, params)
 }
 
 module.exports = {
   driver,
   session,
-
+  query
 }
