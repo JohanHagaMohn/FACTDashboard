@@ -11,6 +11,13 @@ router.get("/tweets/count", async (req, res, next) => {
   })
 })
 
+// Count users in database
+router.get("/users/count", async (req, res, next) => {
+  res.send({
+    count: await mongo.countUsers()
+  })
+})
+
 // Count tweets in database by date
 router.get("/tweets/count/date", async (req, res, next) => {
   function monthFromNum(m) {
