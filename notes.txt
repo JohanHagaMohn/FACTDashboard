@@ -1,5 +1,5 @@
-ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.48.126.185
-ssh -i johan.pem -L 7687:localhost:7687 ubuntu@16.170.37.130
+ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.51.62.33
+ssh -i johan.pem -L 7687:localhost:7687 ubuntu@16.170.80.231
 
 Neo4J Browser 16.170.37.130:7474
 
