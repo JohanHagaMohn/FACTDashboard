@@ -5,6 +5,11 @@ api.countTweets = async function() {
   return await res.json()
 }
 
+api.countUsers = async function() {
+  let res = await fetch("/API/users/count")
+  return await res.json()
+}
+
 api.countTweetsByDate = async function(year, month, day) {
   let res = await fetch(`/API/tweets/count/date?y=${year}&m=${month}&d=${day}`)
   return await res.json()

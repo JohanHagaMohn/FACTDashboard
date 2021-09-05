@@ -28,6 +28,10 @@ async function countTweets(query) {
   return await tweetCol.countDocuments(query)
 }
 
+async function countUsers(query) {
+  return await tweetCol.countDocuments(query)
+}
+
 async function getTweet(query) {
   return await tweetCol.findOne(query)
 }
@@ -40,5 +44,6 @@ module.exports = {
     users: usersCol
   },
   countTweets,
+  countUsers,
   getTweet
 }
