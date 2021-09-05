@@ -1,8 +1,13 @@
 /* globals Chart:false, feather:false */
 
 (async function () {
-  let count = await $.get("./API/mongo/tweets/count");
-  document.querySelector("#count").innerHTML = count.count;
+  let count = await api.countTweets();
+  document.querySelector("#tweetCount").innerHTML = count.count;
+})();
+
+(async function () {
+  let count = await api.countUsers();
+  document.querySelector("#usersCount").innerHTML = count.count;
 })();
 
 const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"><div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div></div>";
@@ -57,7 +62,7 @@ async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];
 
   for (let i = 0; i < 7; i++) {
-    pData[i] = $.get("./API/mongo/tweets/count/date?y=2020&m=8&d=" + (i + 11));
+    pData[i] = api.countTweetsByDate(2020, 8, (i + 11));
   }
 
   let data = await Promise.all(pData)
