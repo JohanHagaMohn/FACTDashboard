@@ -20,6 +20,21 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  // Get a tweet by Id
+  router.get("/getById", async (req, res, next) => {
+    const response = await mongo.getTweet({
+      "id_str": {
+        "$eq": req.query.id
+      }
+    })
+
+    if(response == null) {
+      res.status(404).send("Not Found")
+    } else {
+      res.send(response)
+    }
+  })
+
   // Validate date
   function validateDate(y, m, d) {
     if (!(d
