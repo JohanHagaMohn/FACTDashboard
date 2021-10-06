@@ -18,8 +18,16 @@ async function query(query, params) {
   return await session.run(query, params)
 }
 
+// Find followers of a user
+async function getFollowers(id) {
+  return await query('MATCH (s:user {id_str: $id_str})<-[r:FOLLOW]-(f:user) RETURN s, r, f', {
+    id_str: id
+  })
+}
+
 module.exports = {
   driver,
   session,
-  query
+  query,
+  getFollowers
 }

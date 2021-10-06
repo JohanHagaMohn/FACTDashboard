@@ -14,6 +14,16 @@ router.get("/users/count", async (req, res, next) => {
   })
 })
 
+router.get("/users/followers", async (req, res, next) => {
+  if (!req.query.id) {
+    res.status(400).send("This wndpoint requires an id to be specified")
+    return
+  }
+
+  let response = await neo4j.getFollowers(req.query.id)
+  res.send(response)
+})
+
 // Followernetwork example
 router.get("/followernetwork", async (req, res, next) => {
   const nodes = await neo4j.query('MATCH (n:user) RETURN n')
