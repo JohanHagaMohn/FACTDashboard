@@ -19,3 +19,14 @@ api.getFollowernetwork = async function() {
   let res = await fetch("/API/followernetwork")
   return await res.json()
 }
+
+api.getTweet = async function(id) {
+  let res = await fetch(`/API/tweets/get?id=${id}`)
+  if(res.status == 200) {
+    return await res.json()
+  } else if (res.status == 404) {
+    return null
+  } else {
+    throw Error("Unexpected error while trying to feth a tweeet by an id.")
+  }
+}
