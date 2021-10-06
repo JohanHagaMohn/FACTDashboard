@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// TODO
+// Finish the get tweets in a week
+
 module.exports = (mongo, neo4j) => {
 
   // Count tweets in database
