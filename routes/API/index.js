@@ -7,22 +7,8 @@ const neo4j = require("../../neo4j.js");
 const tweetsRouter = require("./tweets.js")(mongo, neo4j)
 router.use("/tweets", tweetsRouter)
 
-// Count users in database
-router.get("/users/count", async (req, res, next) => {
-  res.send({
-    count: await mongo.countUsers()
-  })
-})
-
-router.get("/users/followers", async (req, res, next) => {
-  if (!req.query.id) {
-    res.status(400).send("This wndpoint requires an id to be specified")
-    return
-  }
-
-  let response = await neo4j.getFollowers(req.query.id)
-  res.send(response)
-})
+const usersRouter = require("./users.js")(mongo, neo4j)
+router.use("/users", usersRouter)
 
 // Followernetwork example
 router.get("/followernetwork", async (req, res, next) => {
