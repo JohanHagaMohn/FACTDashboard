@@ -39,6 +39,10 @@ async function getTweet(query) {
   return await tweetCol.findOne(query)
 }
 
+async function getUser(query) {
+  return await usersCol.findOne(query)
+}
+
 module.exports = {
   client,
   database,
@@ -48,5 +52,6 @@ module.exports = {
   },
   countTweets,
   countUsers,
-  getTweet
+  getTweet,
+  getUser
 }

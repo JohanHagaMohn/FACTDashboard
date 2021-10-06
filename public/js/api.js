@@ -35,6 +35,18 @@ api.getTweet = async function(id) {
   }
 }
 
+// Get a specific user by an id
+api.getUser = async function(id) {
+  let res = await fetch(`/API/users/get?id=${id}`)
+  if(res.status == 200) {
+    return await res.json()
+  } else if (res.status == 404) {
+    return null
+  } else {
+    throw Error("Unexpected error while trying to feth a user by an id.")
+  }
+}
+
 // Get followers of a user by the user id
 api.getFollowers = async function(id) {
   let res = await fetch(`/API/users/followers?id=${id}`)

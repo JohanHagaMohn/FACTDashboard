@@ -109,3 +109,4 @@ routes/API/neo4jTestData/Archive/
 
 # Pem
 johan.pem
+*.pyc
