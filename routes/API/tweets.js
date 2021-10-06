@@ -62,13 +62,8 @@ module.exports = (mongo, neo4j) => {
   // Count tweets in database by date
   router.get("/count/date", async (req, res, next) => {
     // Validate request
-    if (!(req.query.d
-      && req.query.d.match(/^[0-9]{1,2}$/)
-      && req.query.m
-      && req.query.m.match(/^[0-9]{1,2}$/)
-      && req.query.y
-      && req.query.y.match(/^[0-9]{4}$/)
-    )) {
+    let date = validateDate(req.query.y, req.query.m, req.query.d)
+    if (!date) {
       res.status(400).send({
         status: 400,
         msg: "Bad Request.  This api needs a d, m and y parameter.  They should be a string where d and m contains one or two numbers and y contains four numbers."
@@ -89,6 +84,13 @@ module.exports = (mongo, neo4j) => {
     })
   })
 
+  // Find the previous monday
+  function previousMonday(date) {
+    var prevMonday = new Date();
+    prevMonday.setDate(date.getDate() - (date.getDay() + 6) % 7);
+    return prevMonday
+  }
+
   // Get tweets by day of a week
   router.get("/count/week", async (req, res, next) => {
 
@@ -102,6 +104,8 @@ module.exports = (mongo, neo4j) => {
       })
       return;
     }
+
+    date = previousMonday(date)
 
     res.send(date.toString())
   })

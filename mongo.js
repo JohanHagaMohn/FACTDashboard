@@ -29,7 +29,7 @@ async function countTweets(query) {
 }
 
 async function countUsers(query) {
-  return await tweetCol.countDocuments(query)
+  return await usersCol.countDocuments(query)
 }
 
 async function getTweet(query) {
