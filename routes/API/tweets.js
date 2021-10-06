@@ -12,20 +12,18 @@ module.exports = (mongo, neo4j) => {
 
   // Get a tweet
   router.get("/get", async (req, res, next) => {
-    const response = await mongo.getTweet({
-    }, {
-      skip: req.query.skip | 0
-    })
+    let query = {}
 
-    res.send(response)
-  })
-
-  // Get a tweet by Id
-  router.get("/getById", async (req, res, next) => {
-    const response = await mongo.getTweet({
-      "id_str": {
-        "$eq": req.query.id
+    if (req.query.id) {
+      query = {
+        "id_str": {
+          "$eq": req.query.id
+        }
       }
+    }
+
+    const response = await mongo.getTweet(query, {
+      skip: req.query.skip | 0
     })
 
     if(response == null) {
@@ -91,6 +89,7 @@ module.exports = (mongo, neo4j) => {
     })
   })
 
+  // Get tweets by day of a week
   router.get("/count/week", async (req, res, next) => {
 
     let date = validateDate(req.query.y, req.query.m, req.query.d)
