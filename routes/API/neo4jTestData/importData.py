@@ -33,11 +33,9 @@ class neo4jClient:
             )
             if result.single() == None:
                 session.run(
-                    "CREATE (n:tweet {id_str: $id_str, full_text: $full_text, created_at: $created_at})",
+                    "CREATE (n:tweet {id_str: $id_str})",
                     {
                         "id_str": tweet["id_str"],
-                        "full_text": tweet["full_text"],
-                        "created_at": tweet["created_at"],
                     },
                 )
 
@@ -49,14 +47,9 @@ class neo4jClient:
             if result.single() == None:
 
                 session.run(
-                    "CREATE (n:user {id_str: $id_str, name: $name, screen_name: $screen_name, created_at: $created_at, full_text: $full_text, profile_image_url_https: $profile_image_url_https})",
+                    "CREATE (n:user {id_str: $id_str})",
                     {
                         "id_str": user["id_str"],
-                        "name": user["name"],
-                        "screen_name": user["screen_name"],
-                        "created_at": user["status"]["created_at"],
-                        "full_text": user["status"]["full_text"],
-                        "profile_image_url_https": user["profile_image_url_https"],
                     },
                 )
 
@@ -103,10 +96,11 @@ def findRetweetTimes(CSVfile):
 
 
 def addUserData(client, mongo, file):
-    with open("tmp.json", encoding="utf-8") as json_file:
+    with open(file, encoding="utf-8") as json_file:
         tweetData = json.load(json_file)
         for tweet in tweetData:
             client.addUser(tweet)
+            mongo.addTweet(tweet)
             mongo.addUser(tweet)
 
 
@@ -114,26 +108,27 @@ def main():
     client = neo4jClient(URI, USERNAME, PASSWORD)
 
     # Delete all data
-    client.query("MATCH (n) DETACH DELETE n")
-
-    createJSONFile("./1099560067370704896/users.json", "tmp.json")
+    # client.query("MATCH (n) DETACH DELETE n")
     mongo = importMongo.mongo()
     mongo.connect()
-    addUserData(client, mongo, "tmp.json")
-    os.remove("tmp.json")
 
-    with open("./1099560067370704896/edges.csv", "r", encoding="utf-8") as edges:
+    for dir in os.scandir("./Archive"):
+        createJSONFile(f"{dir.path}/users.json", "tmp.json")
+        addUserData(client, mongo, "tmp.json")
+        os.remove("tmp.json")
 
-        for i, edge in enumerate(edges.readlines()):
-            if i > 0:
-                split = edge.split(",")
-                src = split[0]
-                trg = split[1][:-1]
+        with open(f"{dir.path}/edges.csv", "r", encoding="utf-8") as edges:
 
-                client.query(
-                    "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
-                    {"src": src, "trg": trg},
-                )
+            for i, edge in enumerate(edges.readlines()):
+                if i > 0:
+                    split = edge.split(",")
+                    src = split[0]
+                    trg = split[1][:-1]
+
+                    client.query(
+                        "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
+                        {"src": src, "trg": trg},
+                    )
 
     client.close()
 

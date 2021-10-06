@@ -17,16 +17,35 @@ class mongo:
         client = MongoClient(self.DBURL)
         print("Connected successfully to Mongo DB")
         self.DB = client[self.DBNAME]
-        self.DB.tweets.remove({})
-        self.DB.users.remove({})
+        # self.DB.tweets.remove({})
+        # self.DB.users.remove({})
         # print(DB.tweets.find_one({}))
+
+    def addTweet(self, tweet):
+        try:
+            if not self.DB.tweets.find_one(
+                {"id_str": {"$eq": tweet["status"]["id_str"]}}
+            ):
+                res1 = self.DB.tweets.insert_one(tweet["status"])
+                print("Tweets: ", res1.inserted_id, self.DB.tweets.count_documents({}))
+            else:
+                print(
+                    self.DB.tweets.find_one(
+                        {"id_str": {"$eq": tweet["status"]["id_str"]}}
+                    )
+                )
+        except KeyError:
+            pass
 
     def addUser(self, tweet):
         # print(self.DB.tweets.find_one({}))
-        res1 = self.DB.tweets.insert_one(tweet["status"])
-        del tweet["status"]
-        self.DB.users.insert_one(tweet)
-        print(res1.inserted_id, self.DB.tweets.count_documents({}))
+        try:
+            del tweet["status"]
+        except KeyError:
+            pass
+        if not self.DB.users.find_one({"id_str": {"$eq": tweet["id_str"]}}):
+            res2 = self.DB.users.insert_one(tweet)
+            print("Users: ", res2.inserted_id, self.DB.users.count_documents({}))
 
 
 # mongoConnect()
