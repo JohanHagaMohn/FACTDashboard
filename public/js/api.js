@@ -30,3 +30,8 @@ api.getTweet = async function(id) {
     throw Error("Unexpected error while trying to feth a tweeet by an id.")
   }
 }
+
+api.getFollowers = async function(id) {
+  let res = await fetch(`/API/users/followers?id=${id}`)
+  return await res.json()
+}
