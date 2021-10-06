@@ -28,19 +28,25 @@
   const width = window.innerWidth * 0.78;
   const radius = 8;
 
-  const neo4jData = await api.getFollowernetwork();
+  //const neo4jData = await api.getFollowernetwork();
+  const neo4jData = await api.getFollowers("1611503244");
+
+  let neo4jNodes = []
+  neo4jNodes.push(neo4jData.records[0]._fields[0])
 
   let edges = []
-  for (let edge of neo4jData.edges) {
+  for (let record of neo4jData.records) {
     edges.push({
-      source: edge.start.low,
-      target: edge.end.low
+      source: record._fields[1].start.low,
+      target: record._fields[1].end.low
     })
+    neo4jNodes.push(record._fields[2])
   }
 
   const chart = () => {
     const links = edges.map(d => Object.create(d));
-    const nodes = neo4jData.nodes.map(d => Object.create(d));
+    //const nodes = neo4jData.nodes.map(d => Object.create(d));
+    const nodes = neo4jNodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
