@@ -24,14 +24,17 @@ let database, tweetCol, usersCol;
   usersCol = database.collection("users");
 })();
 
+// Counts alle the tweets in the database
 async function countTweets(query) {
   return await tweetCol.countDocuments(query)
 }
 
+// Counts all the users in the database
 async function countUsers(query) {
   return await usersCol.countDocuments(query)
 }
 
+// Find a tweet by its id
 async function getTweet(query) {
   return await tweetCol.findOne(query)
 }
