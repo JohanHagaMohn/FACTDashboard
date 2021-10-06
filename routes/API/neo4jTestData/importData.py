@@ -135,10 +135,8 @@ def addFollowernetwork(path, client):
                 )
 
 def addRetweetsRelationship(path, client):
-    return
-    # The data is for user ids not the tweet ids
     with open(f"{path}/nodes.csv", "r", encoding="utf-8") as retweetTime:
-        src = dir.path.split("\\")[-1]
+        src = path.split("\\")[-1]
 
         for i, retweet in enumerate(retweetTime.readlines()):
             if i > 0:
@@ -146,8 +144,13 @@ def addRetweetsRelationship(path, client):
                 trg = split[0]
                 time = split[1][:-1]
 
+                print(src)
+                print(trg)
+                print(time)
+                exit(1)
+
                 client.query(
-                    "MATCH (a:tweet {id_str: $src}) MATCH (b:tweet {id_str: $trg}) CREATE (a)<-[:retweet {time: $time}]-(b)",
+                    "MATCH (:user {id_str: $src})<-[:created_by]-(a:tweet) MATCH (:user {id_str: $trg})<-[:created_by]-(b:tweet) CREATE (a)<-[:retweet {time: $time}]-(b)",
                     {"src": src, "trg": trg, "time": time},
                 )
 
@@ -165,45 +168,17 @@ def main():
         countInt += 1
         print(f"{countInt}\t{countInt / 3.3}%")
 
-        if(countInt < 218):
-            continue
-
-        r = createJSONFile(f"{dir.path}/users.json", "tmp.json")
-        if (r == "empty"):
-            continue
-        addUserData(client, mongo, "tmp.json")
-        os.remove("tmp.json")
+        #r = createJSONFile(f"{dir.path}/users.json", "tmp.json")
+        #if (r == "empty"):
+        #    continue
+        #addUserData(client, mongo, "tmp.json")
+        #os.remove("tmp.json")
 
         #addFollowernetwork(dir.path, client)
 
-        #addRetweetsRelationship(dir.path, client)
+        addRetweetsRelationship(dir.path, client)
 
     client.close()
-
-
-def fromFolder(client):
-
-    for dir in findDirs(PATH):
-        createJSONFile(PATH + dir + "/users.json", "tmp.json")
-        addUserData(client, "tmp.json")
-
-        os.remove("tmp.json")
-
-        with open(PATH + dir + "/edges.csv", "r", encoding="utf-8") as edges:
-
-            for i, edge in enumerate(edges.readlines()):
-                if i > 0:
-                    split = edge.split(",")
-                    src = split[0]
-                    trg = split[1][:-1]
-
-                    client.query(
-                        "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
-                        {"src": src, "trg": trg},
-                    )
-
-        break
-
 
 if __name__ == "__main__":
     main()
