@@ -108,7 +108,7 @@
     }
 
     twttr.ready(() => {
-      node.on('click', function (a, n) {
+      node.on('click', async function (a, n) {
         if (toRemove) {
           d3.select(toRemove).transition().duration(350).attr("r", radius);
           tweet.remove();
@@ -119,7 +119,10 @@
 
         twitterLogo = '<svg id="twitterLogo" viewBox="0 0 24 24" color="rgb(29, 161, 242)" class="r-13gxpu9 r-4qtqp9 r-yyyyoo r-1ve99a9 r-19fsva8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-23tnvd"><g><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path></g></svg>';
 
-        k = new Date(Date.parse(n.properties.created_at))
+        let user = await api.getUser(n.properties.id_str)
+        console.log(user)
+
+        k = new Date(Date.parse(user.created_at))
         noon = k.getHours() > 11 ? "PM" : "AM";
         console.log(k.getHours(), k)
         function capitalize(s) {
@@ -127,9 +130,9 @@
         }
         minutes = k.getMinutes() > 9 ? k.getMinutes() : "0" + k.getMinutes();
 
-        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${n.properties.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${n.properties.name}</h6><h6 id="tweetTag">@${n.properties.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${n.properties.full_text.replace(/(^[ \t]*\n)/gm, "")}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(k)}, ${k.getFullYear()}</a></div >`;
+        tweet.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${user.profile_image_url_https}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${user.name}</h6><h6 id="tweetTag">@${user.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">Hei på deg din gamle sei!💩</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${k.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(k)}, ${k.getFullYear()}</a></div >`;
         console.log(n)
-        console.log(n.properties.id_str)
+        console.log(user.id_str)
 
         tweet.id = "graphTweet";
         d3.select(this).transition().duration(350).attr("r", radius * 2.5);
