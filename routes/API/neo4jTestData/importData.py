@@ -27,16 +27,31 @@ class neo4jClient:
             session.run(query, data)
 
     def addTweet(self, tweet):
+        if (not "status" in tweet):
+            return
+
         with self.driver.session() as session:
             result = session.run(
-                "MATCH (n:tweet {id_str:$id_str}) RETURN n", id_str=tweet["id_str"]
+                "MATCH (n:tweet {id_str:$id_str}) RETURN n", id_str=tweet["status"]["id_str"]
             )
             if result.single() == None:
                 session.run(
                     "CREATE (n:tweet {id_str: $id_str})",
                     {
-                        "id_str": tweet["id_str"],
+                        "id_str": tweet["status"]["id_str"],
                     },
+                )
+
+                session.run(
+                    """
+                    MATCH (t:tweet {id_str: $tweet_id})
+                    MATCH (u:user {id_str: $user_id})
+                    CREATE (t)-[:created_by]->(u)
+                    """,
+                    {
+                        "tweet_id": tweet["status"]["id_str"],
+                        "user_id": tweet["id_str"]
+                    }
                 )
 
     def addUser(self, user):
@@ -77,6 +92,8 @@ def createJSONFile(fileIn, fileOut):
     ) as outFile:
         outFile.write("[\n")
         lines = usersFile.readlines()
+        if(len(lines) == 0):
+            return "empty"
         for i in range(len(lines) - 1):
             outFile.write(lines[i][:-1] + ",\n")
         outFile.write(lines[-1][:-1] + "\n")
@@ -94,15 +111,48 @@ def findRetweetTimes(CSVfile):
 
     return ret
 
-
 def addUserData(client, mongo, file):
     with open(file, encoding="utf-8") as json_file:
         tweetData = json.load(json_file)
         for tweet in tweetData:
-            client.addUser(tweet)
-            mongo.addTweet(tweet)
-            mongo.addUser(tweet)
+            #client.addUser(tweet)
+            #mongo.addTweet(tweet)
+            #mongo.addUser(tweet)
+            client.addTweet(tweet)
 
+def addFollowernetwork(path, client):
+    with open(f"{path}/edges.csv", "r", encoding="utf-8") as edges:
+
+        for i, edge in enumerate(edges.readlines()):
+            if i > 0:
+                split = edge.split(",")
+                src = split[0]
+                trg = split[1][:-1]
+
+                client.query(
+                    "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
+                    {"src": src, "trg": trg},
+                )
+
+def addRetweetsRelationship(path, client):
+    with open(f"{path}/nodes.csv", "r", encoding="utf-8") as retweetTime:
+        src = path.split("\\")[-1]
+
+        for i, retweet in enumerate(retweetTime.readlines()):
+            if i > 0:
+                split = retweet.split(",")
+                trg = split[0]
+                time = split[1][:-1]
+
+                print(src)
+                print(trg)
+                print(time)
+                exit(1)
+
+                client.query(
+                    "MATCH (:user {id_str: $src})<-[:created_by]-(a:tweet) MATCH (:user {id_str: $trg})<-[:created_by]-(b:tweet) CREATE (a)<-[:retweet {time: $time}]-(b)",
+                    {"src": src, "trg": trg, "time": time},
+                )
 
 def main():
     client = neo4jClient(URI, USERNAME, PASSWORD)
@@ -112,50 +162,23 @@ def main():
     mongo = importMongo.mongo()
     mongo.connect()
 
+    countInt = 0
+
     for dir in os.scandir("./Archive"):
-        createJSONFile(f"{dir.path}/users.json", "tmp.json")
-        addUserData(client, mongo, "tmp.json")
-        os.remove("tmp.json")
+        countInt += 1
+        print(f"{countInt}\t{countInt / 3.3}%")
 
-        with open(f"{dir.path}/edges.csv", "r", encoding="utf-8") as edges:
+        #r = createJSONFile(f"{dir.path}/users.json", "tmp.json")
+        #if (r == "empty"):
+        #    continue
+        #addUserData(client, mongo, "tmp.json")
+        #os.remove("tmp.json")
 
-            for i, edge in enumerate(edges.readlines()):
-                if i > 0:
-                    split = edge.split(",")
-                    src = split[0]
-                    trg = split[1][:-1]
+        #addFollowernetwork(dir.path, client)
 
-                    client.query(
-                        "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
-                        {"src": src, "trg": trg},
-                    )
+        addRetweetsRelationship(dir.path, client)
 
     client.close()
-
-
-def fromFolder(client):
-
-    for dir in findDirs(PATH):
-        createJSONFile(PATH + dir + "/users.json", "tmp.json")
-        addUserData(client, "tmp.json")
-
-        os.remove("tmp.json")
-
-        with open(PATH + dir + "/edges.csv", "r", encoding="utf-8") as edges:
-
-            for i, edge in enumerate(edges.readlines()):
-                if i > 0:
-                    split = edge.split(",")
-                    src = split[0]
-                    trg = split[1][:-1]
-
-                    client.query(
-                        "MATCH (a:user {id_str: $src}) MATCH (b:user {id_str: $trg}) CREATE (a)-[:FOLLOW]->(b)",
-                        {"src": src, "trg": trg},
-                    )
-
-        break
-
 
 if __name__ == "__main__":
     main()

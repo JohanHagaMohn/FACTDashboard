@@ -21,5 +21,25 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  router.get("/get", async (req, res, next) => {
+    let query = {}
+
+    if (req.query.id) {
+      query = {
+        "id_str": {
+          "$eq": req.query.id
+        }
+      }
+    }
+
+    const response = await mongo.getUser(query)
+
+    if(response == null) {
+      res.status(404).send("Not Found")
+    } else {
+      res.send(response)
+    }
+  })
+
   return router
 }
