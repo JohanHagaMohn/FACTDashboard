@@ -144,7 +144,74 @@ main {
     } 
 
   }
-  
+  #userInfo, #userInfo > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h6 {
+      font-weight: 500;
+    }
+  }
+  #userData {
+    height: 100%;
+    width: 100%;
+  }
+  #userBanner {
+    height: 25%;
+    width: 100%;
+    border-radius: 9px 9px 0 0;
+  }
+  .userIcon > svg{
+    height: 1em;
+    width: 1em;
+  }
+  #userProfileImage {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 2px solid rgb(20, 23, 26);
+    margin: 3px;
+    //transform: translateY(-50%);
+  }
+  #userProfile, #description, #userInfo {
+    transform: translateY(-30px);
+  }
+  #userProfile, #userProfile > a {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    h6 {
+      margin-bottom: .25rem;
+    }
+    #userTag {
+      font-size: 12px;
+    }
+  }
+  #userData {
+    overflow-y: scroll;
+  }
+  #description {
+    font-size: 9px;
+    margin: 0 15px 0 15px
+  }
+  #userInfo {
+    margin: 10px 15px auto 15px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    > div, >div svg {
+      align-items: center;
+      display: flex;
+      h6 {
+        margin: 0 0 0 5px;
+      }
+    }
+  }
+
+  #userInfo h6 {
+    font-size: 9px;
+  }
 }
 
 body {
