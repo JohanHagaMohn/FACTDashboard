@@ -2,21 +2,3 @@ ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.51.62.33
 ssh -i johan.pem -L 7687:localhost:7687 ubuntu@16.170.80.231
 
 Neo4J Browser http://16.170.80.231:7474
-
-https://neo4j.com/developer/docker/
-docker run -p7474:7474 -p7687:7687 -e NEO4J_AUTH=neo4j/s3cr3t neo4j
-
-https://neo4j.com/docs/operations-manual/current/tools/dump-load/
-
-docker container exec -it <container> /bin/bash
-
-cypher-shell
-neo4j-admin load --from=/home/Archive.zip --database=test --force
-
-Før neste møte:
-minne på neo4j database
-
-https://d3-wiki.readthedocs.io/zh_CN/master/
-
-DROPPED OF HERE:
-https://neo4j.com/developer/javascript/

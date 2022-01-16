@@ -43,6 +43,10 @@ async function getUser(query) {
   return await usersCol.findOne(query)
 }
 
+async function getRandomUser(n) {
+  return await usersCol.aggregate([{ $sample: { size: (n | 1) } }]).toArray()
+}
+
 module.exports = {
   client,
   database,
@@ -53,5 +57,6 @@ module.exports = {
   countTweets,
   countUsers,
   getTweet,
-  getUser
+  getUser,
+  getRandomUser
 }

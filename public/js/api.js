@@ -52,3 +52,13 @@ api.getFollowers = async function(id) {
   let res = await fetch(`/API/users/followers?id=${id}`)
   return await res.json()
 }
+
+api.getRandomUsers = async function(n) {
+  let num = n | 1
+  let res = await fetch(`/API/users/random?n=${num}`)
+  return await res.json()
+}
+
+api.getRandomUser = async function() {
+  return (await api.getRandomUsers())[0]
+}

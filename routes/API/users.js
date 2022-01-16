@@ -41,5 +41,10 @@ module.exports = (mongo, neo4j) => {
     }
   })
 
+  router.get("/random", async (req, res, next) => {
+    const response = await mongo.getRandomUser(req.query.n | 1)
+    res.send(response)
+  })
+
   return router
 }
