@@ -39,10 +39,17 @@ async function getTweet(query) {
   return await tweetCol.findOne(query)
 }
 
+// Find user
 async function getUser(query) {
   return await usersCol.findOne(query)
 }
 
+// Find random tweet
+async function getRandomTweet(n) {
+  return await tweetCol.aggregate([{ $sample: { size: (n | 1) } }]).toArray()
+}
+
+// Find random user
 async function getRandomUser(n) {
   return await usersCol.aggregate([{ $sample: { size: (n | 1) } }]).toArray()
 }
@@ -58,5 +65,6 @@ module.exports = {
   countUsers,
   getTweet,
   getUser,
+  getRandomTweet,
   getRandomUser
 }

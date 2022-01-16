@@ -53,6 +53,16 @@ api.getFollowers = async function(id) {
   return await res.json()
 }
 
+api.getRandomTweets = async function(n) {
+  let num = n | 1
+  let res = await fetch(`/API/tweets/random?n=${num}`)
+  return await res.json()
+}
+
+api.getRandomTweet = async function() {
+  return (await api.getRandomTweets())[0]
+}
+
 api.getRandomUsers = async function(n) {
   let num = n | 1
   let res = await fetch(`/API/users/random?n=${num}`)

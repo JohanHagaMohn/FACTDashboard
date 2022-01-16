@@ -113,5 +113,11 @@ module.exports = (mongo, neo4j) => {
     res.send(date.toString())
   })
 
+  // Get random tweet
+  router.get("/random", async (req, res, next) => {
+    const response = await mongo.getRandomTweet(req.query.n | 1)
+    res.send(response)
+  })
+
   return router
 }
