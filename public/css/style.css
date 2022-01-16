@@ -218,6 +218,112 @@ main * {
   text-decoration: underline;
 }
 
+#graphTweet #userInfo, #graphTweet #userInfo > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#graphTweet #userInfo h6, #graphTweet #userInfo > div h6 {
+  font-weight: 500;
+}
+
+#graphTweet #userData {
+  height: 100%;
+  width: 100%;
+}
+
+#graphTweet #userBanner {
+  height: 25%;
+  width: 100%;
+  border-radius: 9px 9px 0 0;
+}
+
+#graphTweet .userIcon > svg {
+  height: 1em;
+  width: 1em;
+}
+
+#graphTweet #userProfileImage {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 2px solid #14171a;
+  margin: 3px;
+}
+
+#graphTweet #userProfile, #graphTweet #description, #graphTweet #userInfo {
+  -webkit-transform: translateY(-30px);
+          transform: translateY(-30px);
+}
+
+#graphTweet #userProfile, #graphTweet #userProfile > a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#graphTweet #userProfile h6, #graphTweet #userProfile > a h6 {
+  margin-bottom: .25rem;
+}
+
+#graphTweet #userProfile #userTag, #graphTweet #userProfile > a #userTag {
+  font-size: 12px;
+}
+
+#graphTweet #userData {
+  overflow-y: scroll;
+}
+
+#graphTweet #description {
+  font-size: 9px;
+  margin: 0 15px 0 15px;
+}
+
+#graphTweet #userInfo {
+  margin: 10px 15px auto 15px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#graphTweet #userInfo > div, #graphTweet #userInfo > div svg {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#graphTweet #userInfo > div h6, #graphTweet #userInfo > div svg h6 {
+  margin: 0 0 0 5px;
+}
+
+#graphTweet #userInfo h6 {
+  font-size: 9px;
+}
+
 body {
   font-size: .875rem;
 }
