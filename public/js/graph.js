@@ -14,7 +14,7 @@ async function followerGraph(id) {
   }
 
   return {
-    nodes: neo4jNodes,
+    dataNodes: neo4jNodes,
     edges: edges
   }
 }
@@ -31,7 +31,7 @@ async function retweetFollowerNetwork(id) {
   }
 
   return {
-    nodes: users,
+    dataNodes: users,
     edges: edges
   }
 }
@@ -66,15 +66,12 @@ async function retweetFollowerNetwork(id) {
   const width = window.innerWidth * 0.78;
   const radius = 8;
 
-  //let {nodes, edges} = await followerGraph("1611503244");
-  let {nodes, edges} = await retweetFollowerNetwork("1275849404067524611");
-
-  let neo4jNodes = nodes
+  //let {dataNodes, edges} = await followerGraph("1611503244");
+  let {dataNodes, edges} = await retweetFollowerNetwork("1275849404067524611");
 
   const chart = () => {
     const links = edges.map(d => Object.create(d));
-    //const nodes = neo4jData.nodes.map(d => Object.create(d));
-    const nodes = neo4jNodes.map(d => Object.create(d));
+    const nodes = dataNodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
