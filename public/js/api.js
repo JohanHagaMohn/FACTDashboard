@@ -73,6 +73,20 @@ api.getRandomUser = async function() {
   return (await api.getRandomUsers())[0]
 }
 
+api.getUserIDFromTweet = async function(id) {
+  if (!id) {
+    throw Exception("Missing required argument, id")
+  }
+
+  const res = await fetch(`/API/users/getFromTweet?id=${id}`)
+  const data = await res.json()
+  if (data.records.length == 0) {
+    console.error("Did not find a tweet with that id")
+    return null
+  }
+  return data.records[0]._fields[0].properties.id_str
+}
+
 // example: api.findRetweets("1275849404067524611")
 api.findRetweets = async function(id) {
   if (!id) {
@@ -82,6 +96,7 @@ api.findRetweets = async function(id) {
   let res = await fetch(`/API/tweets/retweets?id=${id}`)
   return await res.json()
 }
+
 // Example api.followernetworkFromRetweets("1275849404067524611")
 api.followernetworkFromRetweets = async function(id) {
   if (!id) {
