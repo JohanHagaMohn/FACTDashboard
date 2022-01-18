@@ -32,4 +32,17 @@ router.get("/followernetwork", async (req, res, next) => {
   })
 })
 
+router.get("/followernetwork/retweet", async (req, res, next) => {
+  let id = req.query.id
+  if (!id) {
+    res.send(400).send("Missing requierd argument id")
+  }
+  let response = await neo4j.getFollowernetworkFromRetweets(id)
+  if (response == null) {
+    res.status(400).send("Bad id")
+    return
+  }
+  res.send(response)
+})
+
 module.exports = router

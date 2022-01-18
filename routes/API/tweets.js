@@ -121,7 +121,7 @@ module.exports = (mongo, neo4j) => {
 
   router.get("/retweets", async (req, res, next) => {
     if (!req.query.id) {
-      res.status(403).send("Missing requierd argument id")
+      res.status(400).send("Missing requierd argument id")
       return
     }
     const response = await neo4j.findRetweets(req.query.id)
