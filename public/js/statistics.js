@@ -11,51 +11,18 @@
 })();
 
 const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"><div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div></div>";
-let tweetDOMs = [];
-const options = {
-  theme: "light",
-  width: 330,
-  align: "center",
-  dnt: true,
-  conversation: "none"
-}
-
-async function addTweet(DOMelm, id) {
-  //let tweet = await $.get("./API/mongo/tweets/get?skip=" + parseInt(Math.random() * 199));
-  await twttr.widgets.createTweet(
-    /*tweet.id_str,*/
-    id,
-    DOMelm,
-    options
-  )
-  DOMelm.removeChild(DOMelm.childNodes[0])
-}
-
-async function findTweets() {
-  tweets = ["1333397170414870528", "1340280153604284417", "997657383458562048"]
-  i = 0
-  for (DOM of tweetDOMs) {
-    DOM.innerHTML = loadingAnimation;
-    addTweet(DOM, tweets[i++])
-  }
-}
 
 (async function () {
 
   let randTweet = document.getElementById("randTweet")
-  let nCols = Math.floor(randTweet.clientWidth / options.width * 0.97)
+  let nCols = Math.floor(randTweet.clientWidth / 330 * 0.97)
 
-  for (let i = 0; i < nCols; i++) {
-    let divElm = document.createElement("div")
-    divElm.classList.add("col-sm")
-    divElm.innerHTML = loadingAnimation
-    randTweet.appendChild(divElm)
-    tweetDOMs.push(divElm)
+  let tweets = await api.getRandomTweets(nCols)
+
+  for (let i = 0; i < tweets.length; i++) {
+    let elm = genereateTwitterDOM(tweets[i])
+    randTweet.appendChild(elm)
   }
-
-  twttr.ready(() => {
-    findTweets()
-  })
 })();
 
 async function lastWeekData() {

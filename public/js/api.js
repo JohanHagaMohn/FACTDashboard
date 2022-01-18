@@ -73,6 +73,7 @@ api.getRandomUser = async function() {
   return (await api.getRandomUsers())[0]
 }
 
+// example: api.findRetweets("1275849404067524611")
 api.findRetweets = async function(id) {
   if (!id) {
     throw Exception("Missing required argument, id")
