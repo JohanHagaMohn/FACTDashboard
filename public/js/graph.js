@@ -1,3 +1,41 @@
+async function followerGraph(id) {
+  const neo4jData = await api.getFollowers(id);
+
+  let neo4jNodes = []
+  neo4jNodes.push(neo4jData.records[0]._fields[0])
+
+  let edges = []
+  for (let record of neo4jData.records) {
+    edges.push({
+      source: record._fields[1].start.low,
+      target: record._fields[1].end.low
+    })
+    neo4jNodes.push(record._fields[2])
+  }
+
+  return {
+    nodes: neo4jNodes,
+    edges: edges
+  }
+}
+
+async function retweetFollowerNetwork(id) {
+  const {users, relationships} = await api.followernetworkFromRetweets(id);
+
+  let edges = []
+  for (let rel of relationships) {
+    edges.push({
+      source: rel.start.low,
+      target: rel.end.low
+    })
+  }
+
+  return {
+    nodes: users,
+    edges: edges
+  }
+}
+
 (async function () {
   const drag = simulation => {
 
@@ -28,20 +66,10 @@
   const width = window.innerWidth * 0.78;
   const radius = 8;
 
-  //const neo4jData = await api.getFollowernetwork();
-  const neo4jData = await api.getFollowers("1611503244");
+  //let {nodes, edges} = await followerGraph("1611503244");
+  let {nodes, edges} = await retweetFollowerNetwork("1275849404067524611");
 
-  let neo4jNodes = []
-  neo4jNodes.push(neo4jData.records[0]._fields[0])
-
-  let edges = []
-  for (let record of neo4jData.records) {
-    edges.push({
-      source: record._fields[1].start.low,
-      target: record._fields[1].end.low
-    })
-    neo4jNodes.push(record._fields[2])
-  }
+  let neo4jNodes = nodes
 
   const chart = () => {
     const links = edges.map(d => Object.create(d));
@@ -73,7 +101,7 @@
       .data(nodes)
       .join("circle")
       .attr("r", radius)
-      .attr("fill", (d) => ((d.properties.id_str == neo4jData.src) ? "green" : "blue"))
+      .attr("fill", (d) => "blue")
       .call(drag(simulation));
 
     node.append("title")

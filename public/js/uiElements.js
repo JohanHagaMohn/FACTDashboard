@@ -1,6 +1,6 @@
 
 // TODO: This should be recatored @JohanHagaMohn
-function genereateTwitterDOM(someData) {
+function generateTwitterDOM(someData) {
     let divElm = document.createElement("div")
     divElm.style = "margin-top: 20px; width: 100%; overflow: hidden"
     divElm.innerHTML = JSON.stringify(someData)
