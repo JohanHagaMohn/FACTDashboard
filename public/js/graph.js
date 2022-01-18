@@ -75,7 +75,7 @@ async function retweetFollowerNetwork(id) {
 
   const chart = () => {
     const links = edges.map(d => Object.create(d));
-    const nodes = neo4jNodes.map(d => Object.create(d));
+    const nodes = dataNodes.map(d => Object.create(d));
 
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
@@ -135,7 +135,6 @@ async function retweetFollowerNetwork(id) {
       toRemove = null;
       container.removeEventListener('click', remover);
     }
-    var d = 0;
     node.on('click', async function (a, n) {
       console.log(n)
       if (toRemove) {
