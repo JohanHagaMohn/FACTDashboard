@@ -2,3 +2,5 @@ ssh -i johan.pem -L 27017:localhost:27017 ubuntu@13.51.62.33
 ssh -i johan.pem -L 7687:localhost:7687 ubuntu@16.170.80.231
 
 Neo4J Browser http://16.170.80.231:7474
+
+docker run -p7474:7474 -p7687:7687 -e NEO4J_AUTH=neo4j/s3cr3t neo4j

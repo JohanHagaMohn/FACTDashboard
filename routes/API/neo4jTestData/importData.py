@@ -115,7 +115,7 @@ def addUserData(client, mongo, file):
     with open(file, encoding="utf-8") as json_file:
         tweetData = json.load(json_file)
         for tweet in tweetData:
-            #client.addUser(tweet)
+            client.addUser(tweet)
             #mongo.addTweet(tweet)
             #mongo.addUser(tweet)
             client.addTweet(tweet)
@@ -136,31 +136,36 @@ def addFollowernetwork(path, client):
 
 def addRetweetsRelationship(path, client):
     with open(f"{path}/nodes.csv", "r", encoding="utf-8") as retweetTime:
-        src = path.split("\\")[-1]
+        src = None #path.split("\\")[-1]
+
+        trgs = []
 
         for i, retweet in enumerate(retweetTime.readlines()):
             if i > 0:
                 split = retweet.split(",")
                 trg = split[0]
-                time = split[1][:-1]
+                time = int(split[1][:-1])
 
-                print(src)
-                print(trg)
-                print(time)
-                exit(1)
+                if (time == 0):
+                    src = trg
+                else:
+                    trgs.append([trg, time])
+        
+        for i in trgs:
+            #print(src + " -> " + i[0] + " @ " + str(i[1]))
 
-                client.query(
-                    "MATCH (:user {id_str: $src})<-[:created_by]-(a:tweet) MATCH (:user {id_str: $trg})<-[:created_by]-(b:tweet) CREATE (a)<-[:retweet {time: $time}]-(b)",
-                    {"src": src, "trg": trg, "time": time},
-                )
+            client.query(
+                "MATCH (:user {id_str: $src})<-[:created_by]-(a:tweet) MATCH (:user {id_str: $trg})<-[:created_by]-(b:tweet) CREATE (a)<-[:retweet {time: $time}]-(b)",
+                {"src": src, "trg": i[0], "time": i[1]},
+            )
 
 def main():
     client = neo4jClient(URI, USERNAME, PASSWORD)
 
     # Delete all data
-    # client.query("MATCH (n) DETACH DELETE n")
-    mongo = importMongo.mongo()
-    mongo.connect()
+    #client.query("MATCH (n) DETACH DELETE n")
+    #mongo = importMongo.mongo()
+    #mongo.connect()
 
     countInt = 0
 
