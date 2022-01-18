@@ -20,7 +20,7 @@ const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"
   let tweets = await api.getRandomTweets(nCols)
 
   for (let i = 0; i < tweets.length; i++) {
-    let elm = genereateTwitterDOM(tweets[i])
+    let elm = generateTweetDOM(tweets[i])
     randTweet.appendChild(elm)
   }
 })();

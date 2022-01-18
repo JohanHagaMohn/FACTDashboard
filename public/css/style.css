@@ -57,7 +57,7 @@ main * {
           flex: 0 1 auto;
 }
 
-#graphTweet {
+#graphTweet, #randTweet > div {
   margin: 2vh auto 2vh auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -84,7 +84,7 @@ main * {
   transition: all 200ms ease;
 }
 
-#graphTweet #tweetTop {
+#graphTweet #tweetTop, #randTweet > div #tweetTop {
   height: 35%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -102,7 +102,7 @@ main * {
   padding: 15px 15px 10px 15px;
 }
 
-#graphTweet #tweetTop #tweetLogo {
+#graphTweet #tweetTop #tweetLogo, #randTweet > div #tweetTop #tweetLogo {
   width: 5vh;
   height: 5vh;
   -webkit-box-flex: 0;
@@ -119,14 +119,14 @@ main * {
           justify-content: flex-end;
 }
 
-#graphTweet #tweetTop #tweetLogo #twitterLogo {
+#graphTweet #tweetTop #tweetLogo #twitterLogo, #randTweet > div #tweetTop #tweetLogo #twitterLogo {
   height: 3vh;
   width: 3vh;
   -webkit-filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
           filter: invert(48%) sepia(93%) saturate(1472%) hue-rotate(176deg) brightness(98%) contrast(94%);
 }
 
-#graphTweet #tweetTop #tweetProfileImage {
+#graphTweet #tweetTop #tweetProfileImage, #randTweet > div #tweetTop #tweetProfileImage {
   width: 5vh;
   height: 5vh;
   -webkit-box-flex: 0;
@@ -144,7 +144,7 @@ main * {
   border-radius: 50%;
 }
 
-#graphTweet #tweetTop #tweetProfileImage:before {
+#graphTweet #tweetTop #tweetProfileImage:before, #randTweet > div #tweetTop #tweetProfileImage:before {
   content: ' ';
   display: block;
   position: absolute;
@@ -154,14 +154,14 @@ main * {
   border: 1px solid #dee2e6;
 }
 
-#graphTweet #tweetTop #tweetUser {
+#graphTweet #tweetTop #tweetUser, #randTweet > div #tweetTop #tweetUser {
   -webkit-box-flex: 7;
       -ms-flex-positive: 7;
           flex-grow: 7;
   margin: 0 0 0 5px;
 }
 
-#graphTweet #tweetTop #tweetUser #tweetUsername {
+#graphTweet #tweetTop #tweetUser #tweetUsername, #randTweet > div #tweetTop #tweetUser #tweetUsername {
   color: #14171a;
   font-size: 14px;
   font-weight: 700;
@@ -173,18 +173,18 @@ main * {
   z-index: 1;
 }
 
-#graphTweet #tweetTop #tweetUser #tweetUsername:hover {
+#graphTweet #tweetTop #tweetUser #tweetUsername:hover, #randTweet > div #tweetTop #tweetUser #tweetUsername:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
-#graphTweet #tweetTop #tweetUser #tweetTag {
+#graphTweet #tweetTop #tweetUser #tweetTag, #randTweet > div #tweetTop #tweetUser #tweetTag {
   font-size: 12px;
   font-weight: 400;
   color: #657786;
 }
 
-#graphTweet #tweetMessage {
+#graphTweet #tweetMessage, #randTweet > div #tweetMessage {
   height: 50%;
   font-size: 14px;
   line-height: 18.375px;
@@ -195,30 +195,30 @@ main * {
   margin: 0 15px 0 15px;
 }
 
-#graphTweet #tweetDetails {
+#graphTweet #tweetDetails, #randTweet > div #tweetDetails {
   height: 15%;
   margin: 0 15px 5px 15px;
   z-index: 1;
 }
 
-#graphTweet #tweetDetails:hover {
+#graphTweet #tweetDetails:hover, #randTweet > div #tweetDetails:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
-#graphTweet #tweetDetails #tweetTime {
+#graphTweet #tweetDetails #tweetTime, #randTweet > div #tweetDetails #tweetTime {
   font-size: 14px;
   color: #657786;
   font-weight: 400;
   z-index: 1;
 }
 
-#graphTweet #tweetDetails #tweetTime:hover {
+#graphTweet #tweetDetails #tweetTime:hover, #randTweet > div #tweetDetails #tweetTime:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
-#graphTweet #userInfo, #graphTweet #userInfo > div {
+#graphTweet #userInfo, #graphTweet #userInfo > div, #randTweet > div #userInfo, #randTweet > div #userInfo > div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -231,27 +231,27 @@ main * {
           justify-content: space-between;
 }
 
-#graphTweet #userInfo h6, #graphTweet #userInfo > div h6 {
+#graphTweet #userInfo h6, #graphTweet #userInfo > div h6, #randTweet > div #userInfo h6, #randTweet > div #userInfo > div h6 {
   font-weight: 500;
 }
 
-#graphTweet #userData {
+#graphTweet #userData, #randTweet > div #userData {
   height: 100%;
   width: 100%;
 }
 
-#graphTweet #userBanner {
+#graphTweet #userBanner, #randTweet > div #userBanner {
   height: 25%;
   width: 100%;
   border-radius: 9px 9px 0 0;
 }
 
-#graphTweet .userIcon > svg {
+#graphTweet .userIcon > svg, #randTweet > div .userIcon > svg {
   height: 1em;
   width: 1em;
 }
 
-#graphTweet #userProfileImage {
+#graphTweet #userProfileImage, #randTweet > div #userProfileImage {
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -259,12 +259,12 @@ main * {
   margin: 3px;
 }
 
-#graphTweet #userProfile, #graphTweet #description, #graphTweet #userInfo {
+#graphTweet #userProfile, #graphTweet #description, #graphTweet #userInfo, #randTweet > div #userProfile, #randTweet > div #description, #randTweet > div #userInfo {
   -webkit-transform: translateY(-30px);
           transform: translateY(-30px);
 }
 
-#graphTweet #userProfile, #graphTweet #userProfile > a {
+#graphTweet #userProfile, #graphTweet #userProfile > a, #randTweet > div #userProfile, #randTweet > div #userProfile > a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -277,24 +277,24 @@ main * {
           flex-direction: column;
 }
 
-#graphTweet #userProfile h6, #graphTweet #userProfile > a h6 {
+#graphTweet #userProfile h6, #graphTweet #userProfile > a h6, #randTweet > div #userProfile h6, #randTweet > div #userProfile > a h6 {
   margin-bottom: .25rem;
 }
 
-#graphTweet #userProfile #userTag, #graphTweet #userProfile > a #userTag {
+#graphTweet #userProfile #userTag, #graphTweet #userProfile > a #userTag, #randTweet > div #userProfile #userTag, #randTweet > div #userProfile > a #userTag {
   font-size: 12px;
 }
 
-#graphTweet #userData {
+#graphTweet #userData, #randTweet > div #userData {
   overflow-y: scroll;
 }
 
-#graphTweet #description {
+#graphTweet #description, #randTweet > div #description {
   font-size: 9px;
   margin: 0 15px 0 15px;
 }
 
-#graphTweet #userInfo {
+#graphTweet #userInfo, #randTweet > div #userInfo {
   margin: 10px 15px auto 15px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -307,7 +307,7 @@ main * {
           justify-content: space-between;
 }
 
-#graphTweet #userInfo > div, #graphTweet #userInfo > div svg {
+#graphTweet #userInfo > div, #graphTweet #userInfo > div svg, #randTweet > div #userInfo > div, #randTweet > div #userInfo > div svg {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -316,11 +316,11 @@ main * {
   display: flex;
 }
 
-#graphTweet #userInfo > div h6, #graphTweet #userInfo > div svg h6 {
+#graphTweet #userInfo > div h6, #graphTweet #userInfo > div svg h6, #randTweet > div #userInfo > div h6, #randTweet > div #userInfo > div svg h6 {
   margin: 0 0 0 5px;
 }
 
-#graphTweet #userInfo h6 {
+#graphTweet #userInfo h6, #randTweet > div #userInfo h6 {
   font-size: 9px;
 }
 
