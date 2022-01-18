@@ -46,5 +46,18 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  router.get("/getFromTweet", async (req, res, next) => {
+    if (!req.query.id) {
+      res.status(400).send("Missing requierd argument, id")
+      return
+    }
+    const response = await neo4j.getUserFromTweet(req.query.id)
+    if(response == null) {
+      res.status(404).send("Not Found")
+    } else {
+      res.send(response)
+    }
+  })
+
   return router
 }

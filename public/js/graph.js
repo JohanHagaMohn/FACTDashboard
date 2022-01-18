@@ -15,7 +15,8 @@ async function followerGraph(id) {
 
   return {
     dataNodes: neo4jNodes,
-    edges: edges
+    edges: edges,
+    source: id
   }
 }
 
@@ -30,9 +31,12 @@ async function retweetFollowerNetwork(id) {
     })
   }
 
+  let src = await api.getUserIDFromTweet(id)
+
   return {
     dataNodes: users,
-    edges: edges
+    edges: edges,
+    source: src
   }
 }
 
@@ -66,8 +70,8 @@ async function retweetFollowerNetwork(id) {
   const width = window.innerWidth * 0.78;
   const radius = 8;
 
-  //let {dataNodes, edges} = await followerGraph("1611503244");
-  let {dataNodes, edges} = await retweetFollowerNetwork("1275849404067524611");
+  //let {dataNodes, edges, source} = await followerGraph("1611503244"); // User id
+  let {dataNodes, edges, source} = await retweetFollowerNetwork("1275849404067524611"); // Tweet id
 
   const chart = () => {
     const links = edges.map(d => Object.create(d));
@@ -98,7 +102,7 @@ async function retweetFollowerNetwork(id) {
       .data(nodes)
       .join("circle")
       .attr("r", radius)
-      .attr("fill", (d) => "blue")
+      .attr("fill", (d) => ((d.properties.id_str == source) ? "green" : "blue"))
       .call(drag(simulation));
 
     node.append("title")
