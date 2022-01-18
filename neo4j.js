@@ -27,9 +27,16 @@ async function getFollowers(id) {
   })
 }
 
+async function findRetweets(id) {
+  return await query('MATCH (s:tweet {id_str: $id_str})<-[r:retweet]-(t:tweet) RETURN s, r, t', {
+    id_str: id
+  })
+}
+
 module.exports = {
   driver,
   session,
   query,
-  getFollowers
+  getFollowers,
+  findRetweets
 }

@@ -72,3 +72,12 @@ api.getRandomUsers = async function(n) {
 api.getRandomUser = async function() {
   return (await api.getRandomUsers())[0]
 }
+
+api.findRetweets = async function(id) {
+  if (!id) {
+    throw Exception("Missing required argument, id")
+  }
+
+  let res = await fetch(`/API/tweets/retweets?id=${id}`)
+  return await res.json()
+}
