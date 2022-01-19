@@ -12,17 +12,21 @@
 
 const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"><div class=\"lds-ellipsis\"><div></div><div></div><div></div><div></div></div></div>";
 
-(async function () {
+async function findTweets() {
 
   let randTweet = document.getElementById("randTweet")
+  randTweet.style = "height: 500px;"
+  randTweet.innerHTML = "";
 
-  let tweets = await api.getRandomTweets(3)
+  let tweets = await api.getRandomTweetsWithUserData(3)
 
   for (let i = 0; i < tweets.length; i++) {
     let elm = generateTweetDOM(tweets[i])
     randTweet.appendChild(elm)
   }
-})();
+};
+
+findTweets()
 
 async function lastWeekData() {
   pData = [null, null, null, null, null, null, null];

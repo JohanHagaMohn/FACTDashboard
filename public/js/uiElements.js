@@ -13,20 +13,46 @@ function imageExists(url, callback) {
     img.src = url;
 }
 
-function generateTweetDOM(message) {
+function genereateImgDOM(url, fallback_url) {
+  let img = new Image();
+  img.onerror = () => {
+    img.src = fallback_url
+  }
+  img.src = url
+  img.id = "tweetProfileImage"
+  return img
+}
+
+function generateTweetDOM(user) {
+    let message = user.status 
     popup = document.createElement("DIV");
+
     const now = new Date(Date.parse(message.created_at))
     noon = now.getHours() > 11 ? "PM" : "AM";
     minutes = now.getMinutes() > 9 ? now.getMinutes() : "0" + now.getMinutes();
+    let time = `${now.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now)}, ${now.getFullYear()}`
 
     var userImage = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
 
-    imageExists(message.profile_image_url_https, function (exists, url) {
-        if (exists) {
-          userImage = message.profile_image_url_https
-        }
-        popup.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${userImage}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${message.name}</h6><h6 id="tweetTag">@${message.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${message.full_text}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${now.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now)}, ${now.getFullYear()}</a></div >`;
-    });
+
+    popup.innerHTML = `
+    <div id="tweetTop">
+      <div id="tweetProfile">
+      </div>
+      <a href="https://www.google.com" target="_blank" id="tweetUser">
+        <h6 id="tweetUsername">${user.name}</h6>
+        <h6 id="tweetTag">@${user.screen_name}</h6>
+      </a>
+      <div id="tweetLogo">${twitterLogo}</div>
+    </div>
+    <div id="tweetMessage">${message.full_text}</div>
+    <div id="tweetDetails" >
+      <a href="https://www.google.com" target="_blank" id="tweetTime">${time}</a>
+    </div >`;
+
+    let image = genereateImgDOM(user.profile_image_url_https, userImage)
+
+    popup.children[0].children[0].appendChild(image)
     
     return popup
 }
