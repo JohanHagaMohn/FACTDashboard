@@ -128,28 +128,56 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  async function userDataFromTweet(id) {
+    let results = await neo4j.getUserFromTweet(id)
+    if (results.records.length == 0) {
+      throw "Did not find the corresponding user"
+    }
+
+    let userID = results.records[0]._fields[0].properties.id_str
+    let user = await mongo.getUserById(userID)
+    return user
+  }
+
   router.get("/tweetwithuserdata", async (req, res, next) => {
     if (!req.query.id) {
       res.status(400).send("Missing requierd argument id")
       return
     }
 
-    let promises = []
-    promises.push(mongo.getTweetById(req.query.id))
-    promises.push(neo4j.getUserFromTweet(req.query.id))
+    try {
+      let promises = []
+      promises.push(mongo.getTweetById(req.query.id))
+      promises.push(userDataFromTweet(req.query.id))
 
-    let results = await Promise.all(promises)
-    if (results[1].records.length == 0) {
-      res.status(400).send("Failed to find corresponding user")
-      return
+      let results = await Promise.all(promises)
+
+      let user = results[1]
+      user.status = results[0]
+      res.send(user)
+    } catch (e) {
+      res.status(500).send("Error")
+      console.error("Error pårobably due to a unvalid tweet id")
+      throw e
+    }
+  })
+
+  router.get("/randomwithuserdata", async (req, res, next) => {
+    const response = await mongo.getRandomTweet(req.query.n | 1)
+
+    let promises = []
+
+    for (let tweet of response) {
+      promises.push(userDataFromTweet(tweet.id_str))
     }
 
-    let userID = results[1].records[0]._fields[0].properties.id_str
-    let user = await mongo.getUserById(userID)
+    let users = await Promise.all(promises)
 
-    user.status = results[0]
+    for (let i = 0; i < response.length; i++) {
+      users[i].status = response[i]
+    }
 
-    res.send(user)
+    res.send(users)
   })
 
   return router

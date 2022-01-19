@@ -115,3 +115,15 @@ api.getTweetWithUserData = async function(id) {
   let res = await fetch(`/API/tweets/tweetwithuserdata?id=${id}`)
   return await res.json()
 }
+
+api.getRandomTweetsWithUserData = async function(n) {
+
+  let num = n | 1;
+  
+  let res = await fetch(`/API/tweets/randomwithuserdata?id=${num}`)
+  return await res.json()
+}
+
+api.getRandomTweetWithUserData = async function() {
+  return (await api.getRandomTweetsWithUserData(1))[0]
+}
