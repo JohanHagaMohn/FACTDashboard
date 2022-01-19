@@ -69,100 +69,123 @@ async function retweetFollowerNetwork(id) {
   const height = window.innerHeight * 0.78;
   const width = window.innerWidth * 0.78;
   const radius = 8;
+  const container = document.getElementById("graphContainer");
+  
+  const toggleTweets = document.querySelector(".switch");
+  var tweetsShown = false;
 
   //let {dataNodes, edges, source} = await followerGraph("1611503244"); // User id
   let {dataNodes, edges, source} = await retweetFollowerNetwork("1275849404067524611"); // Tweet id
 
-  const chart = () => {
-    const links = edges.map(d => Object.create(d));
-    const nodes = dataNodes.map(d => Object.create(d));
+  var toRemove;
+  var popup;
+  
 
-    const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
-      .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(width / 2, height / 2));
-
-    const svg = d3.create("svg")
-      .attr("height", "100%")
-      .attr("width", "100%")
-      .attr("viewBox", [0, 0, width, height]);
-
-    const link = svg.append("g")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
-      .selectAll("line")
-      .data(links)
-      .join("line")
-      .attr("stroke-width", d => radius / 3);
-
-    const node = svg.append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1)
-      .selectAll("circle")
-      .data(nodes)
-      .join("circle")
-      .attr("r", radius)
-      .attr("fill", (d) => ((d.properties.id_str == source) ? "green" : "blue"))
-      .call(drag(simulation));
-
-    node.append("title")
-      .text(d => d.name);
-
-    simulation.on("tick", () => {
-
-      node
-        .attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-        .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
-
-      link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
-    });
-
-    var toRemove;
-    var popup;
-
-    const container = document.getElementById("graphContainer");
-
-    function remover() {
+  function remover() {
+    d3.select(toRemove).transition().duration(350).attr("r", radius);
+    popup.style.opacity = 0;
+    setTimeout(() => {
+      popup.remove();
+    }, 300);
+    toRemove = null;
+    container.removeEventListener('click', remover);
+  }
+  function showGraph(dataNodes, edges, source) {
+    const chart = () => {
+      const links = edges.map(d => Object.create(d));
+      const nodes = dataNodes.map(d => Object.create(d));
+  
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2));
+  
+      const svg = d3.create("svg")
+        .attr("height", "100%")
+        .attr("width", "100%")
+        .attr("viewBox", [0, 0, width, height]);
+  
+      const link = svg.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("stroke-width", d => radius / 3);
+  
+      const node = svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1)
+        .selectAll("circle")
+        .data(nodes)
+        .join("circle")
+        .attr("r", radius)
+        .attr("fill", (d) => ((d.properties.id_str == source) ? "green" : "blue"))
+        .call(drag(simulation));
+  
+      node.append("title")
+        .text(d => d.name);
+  
+      simulation.on("tick", () => {
+  
+        node
+          .attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+          .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+  
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+      });
+      node.on('click', async function (a, n) {
+        console.log(n)
+        if (toRemove) {
+          d3.select(toRemove).transition().duration(350).attr("r", radius);
+          popup.remove();
+          container.removeEventListener('click', remover);
+        }
+        toRemove = this;
+        
+        const user = (typeof n.properties.full_text == 'undefined')
+      
+        popup = (user) ? generateUserDOM(await api.getUser(n.properties.id_str)) : generateTwitterDOM(await api.getUser(n.properties.id_str));
+  
+        popup.id = "graphTweet";
+        d3.select(this).transition().duration(350).attr("r", radius * 2.5);
+        container.insertAdjacentElement("afterend", popup);
+        setTimeout(() => {
+          container.addEventListener('click', remover);
+        }, 200);
+      });
+  
+      return svg.node();
+    }
+    container.appendChild(chart())
+  }
+  
+  function switching() {
+    if (toRemove) {
       d3.select(toRemove).transition().duration(350).attr("r", radius);
-      popup.style.opacity = 0;
-      setTimeout(() => {
-        popup.remove();
-      }, 300);
-      toRemove = null;
+      popup.remove();
       container.removeEventListener('click', remover);
     }
-    node.on('click', async function (a, n) {
-      console.log(n)
-      if (toRemove) {
-        d3.select(toRemove).transition().duration(350).attr("r", radius);
-        popup.remove();
-        container.removeEventListener('click', remover);
+    if (!tweetsShown) {
+      tweetsShown = true;
+      while (container.firstChild) {
+        container.removeChild(container.lastChild);
       }
-      toRemove = this;
-      
-      const user = (typeof n.properties.full_text == 'undefined')
-    
-      popup = (user) ? generateUserDOM(await api.getUser(n.properties.id_str)) : generateTwitterDOM(await api.getUser(n.properties.id_str));
-
-      popup.id = "graphTweet";
-      d3.select(this).transition().duration(350).attr("r", radius * 2.5);
-      container.insertAdjacentElement("afterend", popup);
-      setTimeout(() => {
-        container.addEventListener('click', remover);
-      }, 200);
-    });
-
-    return svg.node();
+    } else {
+      showGraph(dataNodes, edges, source);
+      tweetsShown = false;
+    }
+    toggleTweets.removeEventListener('click', switching)
+    setTimeout(function(){
+      toggleTweets.addEventListener("click", switching);
+    },100);
   }
+  toggleTweets.addEventListener("click", switching);
 
-  let divElm = document.getElementById("graphContainer")
-  divElm.style.height = "50vh";
-  divElm.style.width = "auto";
-  divElm.style.maxWidth = "100%";
-  divElm.appendChild(chart())
-
+  return showGraph(dataNodes, edges, source)
 })();
+
