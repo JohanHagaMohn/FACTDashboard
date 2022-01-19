@@ -25,7 +25,7 @@ function generateTweetDOM(message) {
         if (exists) {
           userImage = message.profile_image_url_https
         }
-        popup.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${userImage}"></img></div><a href="https://www.google.com" target="_blank" id="tweetUser"><h6 id="tweetUsername">${message.name}</h6><h6 id="tweetTag">@${message.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${message.full_text}</div><div id="tweetDetails" ><a href="https://www.google.com" target="_blank" id="tweetTime">${now.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now)}, ${now.getFullYear()}</a></div >`;
+        popup.innerHTML = `<div id="tweetTop"><div id="tweetProfile"><img id="tweetProfileImage" src="${userImage}"></img></div><a href="https://www.twitter.com/${message.screen_name}" target="_blank" id="tweetUser"><h6 id="tweetUsername">${message.name}</h6><h6 id="tweetTag">@${message.screen_name}</h6></a><div id="tweetLogo">${twitterLogo}</div></div><div id="tweetMessage">${message.full_text}</div><div id="tweetDetails" ><a href="https://www.twitter.com/${message.screen_name}" target="_blank" id="tweetTime">${now.getHours() % 12}:${minutes} ${noon} · ${new Intl.DateTimeFormat('en-US', { month: 'short' }).format(now)}, ${now.getFullYear()}</a></div >`;
     });
     
     return popup
