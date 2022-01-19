@@ -69,6 +69,14 @@ function idFromURL() {
   return urlParams.get("tweetID")
 }
 
+async function getRandomID() {
+  let id = await api.randomSourceTweetId()
+
+  window.history.pushState("object or string", document.title, `/graph/?tweetID=${id}`)
+
+  return id
+}
+
 (async function () {
   const drag = simulation => {
 
@@ -106,7 +114,7 @@ function idFromURL() {
   let TweetSourceId = idFromURL()
 
   if (!TweetSourceId) {
-    TweetSourceId = await api.randomSourceTweetId()
+    TweetSourceId = await getRandomID()
   }
 
   //let followers = await followerGraph("1611503244"); // User id
