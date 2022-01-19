@@ -74,8 +74,9 @@ async function retweetFollowerNetwork(id) {
   const toggleTweets = document.querySelector(".switch");
   var tweetsShown = false;
 
-  //let {dataNodes, edges, source} = await followerGraph("1611503244"); // User id
-  let {dataNodes, edges, source} = await retweetFollowerNetwork("1275849404067524611"); // Tweet id
+  //let followers = await followerGraph("1611503244"); // User id
+  let usersThatHaveRetweeted = await retweetFollowerNetwork("1275849404067524611"); // Tweet id
+  let retweets = await retweetFollowerNetwork("1275849404067524611");
 
   var toRemove;
   var popup;
@@ -90,7 +91,7 @@ async function retweetFollowerNetwork(id) {
     toRemove = null;
     container.removeEventListener('click', remover);
   }
-  function showGraph(dataNodes, edges, source) {
+  function showGraph({dataNodes, edges, source}) {
     const chart = () => {
       const links = edges.map(d => Object.create(d));
       const nodes = dataNodes.map(d => Object.create(d));
@@ -164,7 +165,13 @@ async function retweetFollowerNetwork(id) {
     container.appendChild(chart())
   }
   
-  function switching() {
+  async function switching() {
+    toggleTweets.removeEventListener('click', switching)
+
+    setTimeout(function(){
+      toggleTweets.addEventListener("click", switching);
+    }, 100);
+    
     if (toRemove) {
       d3.select(toRemove).transition().duration(350).attr("r", radius);
       popup.remove();
@@ -175,17 +182,19 @@ async function retweetFollowerNetwork(id) {
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
+      let retweets = await retweetFollowerNetwork("1275849404067524611");
+      //showGraph(retweets);
     } else {
-      showGraph(dataNodes, edges, source);
       tweetsShown = false;
+      while (container.firstChild) {
+        container.removeChild(container.lastChild);
+      }
+      usersThatHaveRetweeted = await retweetFollowerNetwork("1275849404067524611")
+      showGraph(usersThatHaveRetweeted);
     }
-    toggleTweets.removeEventListener('click', switching)
-    setTimeout(function(){
-      toggleTweets.addEventListener("click", switching);
-    },100);
   }
   toggleTweets.addEventListener("click", switching);
 
-  return showGraph(dataNodes, edges, source)
+  return showGraph(usersThatHaveRetweeted)
 })();
 
