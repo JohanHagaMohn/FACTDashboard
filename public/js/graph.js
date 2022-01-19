@@ -97,9 +97,16 @@ async function getRetweets(id) {
   const toggleTweets = document.querySelector(".switch");
   var tweetsShown = false;
 
+  //let TWEEEEEEEEEET = "1275849404067524611"
+  let TWEEEEEEEEEET = "1275046615510732806"
+  //let TWEEEEEEEEEET = "1274639850495340544"
+  //let TWEEEEEEEEEET = "1275864174309113858"
+  //let TWEEEEEEEEEET = "1275854284526149632"
+  //let TWEEEEEEEEEET = "1260575550734819328"
+
   //let followers = await followerGraph("1611503244"); // User id
-  let usersThatHaveRetweeted = await retweetFollowerNetwork("1275849404067524611"); // Tweet id
-  let retweets = await retweetFollowerNetwork("1275849404067524611");
+  let usersThatHaveRetweeted = await retweetFollowerNetwork(TWEEEEEEEEEET); // Tweet id
+  let retweets = await retweetFollowerNetwork(TWEEEEEEEEEET);
 
   var toRemove;
   var popup;
@@ -206,14 +213,14 @@ async function getRetweets(id) {
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
-      retweets = await getRetweets("1275849404067524611");
+      retweets = await getRetweets(TWEEEEEEEEEET);
       showGraph(retweets);
     } else {
       tweetsShown = false;
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
-      usersThatHaveRetweeted = await retweetFollowerNetwork("1275849404067524611")
+      usersThatHaveRetweeted = await retweetFollowerNetwork(TWEEEEEEEEEET)
       showGraph(usersThatHaveRetweeted);
     }
   }
