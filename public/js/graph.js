@@ -248,7 +248,6 @@ async function getRandomID() {
       newButton.addEventListener("click", newTweet);
     }, 100);
 
-    alert("hi")
     if (toRemove) {
       d3.select(toRemove).transition().duration(350).attr("r", radius);
       popup.remove();
@@ -257,8 +256,12 @@ async function getRandomID() {
     while (container.firstChild) {
       container.removeChild(container.lastChild);
     }
-    newTweetId = await api.randomSourceTweetId();
-    showGraph(newTweetId)
+    newTweetId = getRandomID();
+    if (tweetsShown) {
+      showGraph(await getRetweets(newTweetId))
+    } else {
+      showGraph(await retweetFollowerNetwork(newTweetId))
+    }
   }
 
   newButton.addEventListener("click", newTweet);
