@@ -59,7 +59,7 @@ async function getRetweets(id) {
   return {
     dataNodes,
     edges,
-    src: id
+    source: id
   }
 }
 
@@ -115,7 +115,6 @@ async function getRetweets(id) {
     container.removeEventListener('click', remover);
   }
   function showGraph({dataNodes, edges, source}) {
-    console.log(edges)
     const chart = () => {
       const links = edges.map(d => Object.create(d));
       const nodes = dataNodes.map(d => Object.create(d));
