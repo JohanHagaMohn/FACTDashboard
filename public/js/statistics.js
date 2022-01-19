@@ -15,7 +15,7 @@ const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"
 async function findTweets() {
 
   let randTweet = document.getElementById("randTweet")
-  randTweet.style = "height: 500px;"
+  randTweet.style = "height: 608px;"
   randTweet.innerHTML = "";
 
   let tweets = await api.getRandomTweetsWithUserData(3)
