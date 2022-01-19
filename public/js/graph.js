@@ -66,7 +66,7 @@ async function getRetweets(id) {
 function idFromURL() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  return urlParams.get("tweeID")
+  return urlParams.get("tweetID")
 }
 
 (async function () {
