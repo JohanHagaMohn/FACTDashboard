@@ -16,7 +16,9 @@ function imageExists(url, callback) {
 function genereateImgDOM(url, fallback_url) {
   let img = new Image();
   img.onerror = () => {
-    img.src = fallback_url
+    if(img.src != fallback_url) {
+      img.src = fallback_url
+    }
   }
   img.src = url
   img.id = "tweetProfileImage"
