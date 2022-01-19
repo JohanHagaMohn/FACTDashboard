@@ -202,8 +202,8 @@ async function getRetweets(id) {
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
-      let retweets = await retweetFollowerNetwork("1275849404067524611");
-      //showGraph(retweets);
+      retweets = await getRetweets("1275849404067524611");
+      showGraph(retweets);
     } else {
       tweetsShown = false;
       while (container.firstChild) {
