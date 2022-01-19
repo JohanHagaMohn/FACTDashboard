@@ -256,11 +256,11 @@ async function getRandomID() {
     while (container.firstChild) {
       container.removeChild(container.lastChild);
     }
-    newTweetId = getRandomID();
+    TweetSourceId = await getRandomID();
     if (tweetsShown) {
-      showGraph(await getRetweets(newTweetId))
+      showGraph(await getRetweets(TweetSourceId))
     } else {
-      showGraph(await retweetFollowerNetwork(newTweetId))
+      showGraph(await retweetFollowerNetwork(TweetSourceId))
     }
   }
 
