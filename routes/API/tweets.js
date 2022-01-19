@@ -180,5 +180,15 @@ module.exports = (mongo, neo4j) => {
     res.send(users)
   })
 
+  router.get("/randomsourceid", async (req, res, next) => {
+    const response = await neo4j.findRandomSourceTweet()
+
+    let id = response.records[0]._fields[0].properties.id_str
+
+    res.send({
+      id: id
+    })
+  })
+
   return router
 }

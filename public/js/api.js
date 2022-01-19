@@ -127,3 +127,8 @@ api.getRandomTweetsWithUserData = async function(n) {
 api.getRandomTweetWithUserData = async function() {
   return (await api.getRandomTweetsWithUserData(1))[0]
 }
+
+api.randomSourceTweetId = async function() {
+  let res = await fetch(`/API/tweets/randomsourceid`)
+  return (await res.json()).id
+}
