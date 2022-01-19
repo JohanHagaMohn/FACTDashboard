@@ -231,6 +231,30 @@ function idFromURL() {
   }
   toggleTweets.addEventListener("click", switching);
 
+  newButton = document.querySelector("#newTweet");
+
+  async function newTweet() {
+    newButton.removeEventListener('click', newTweet)
+
+    setTimeout(function(){
+      newButton.addEventListener("click", newTweet);
+    }, 100);
+
+    alert("hi")
+    if (toRemove) {
+      d3.select(toRemove).transition().duration(350).attr("r", radius);
+      popup.remove();
+      container.removeEventListener('click', remover);
+    }
+    while (container.firstChild) {
+      container.removeChild(container.lastChild);
+    }
+    newTweetId = await api.randomSourceTweetId();
+    showGraph(newTweetId)
+  }
+
+  newButton.addEventListener("click", newTweet);
+
   return showGraph(usersThatHaveRetweeted)
 })();
 
