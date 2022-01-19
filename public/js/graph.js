@@ -103,20 +103,15 @@ function idFromURL() {
   const toggleTweets = document.querySelector(".switch");
   var tweetsShown = false;
 
-  //let TWEEEEEEEEEET = "1275849404067524611"
-  //let TWEEEEEEEEEET = "1275046615510732806"
-  //let TWEEEEEEEEEET = "1274639850495340544"
-  let TWEEEEEEEEEET = "1275864174309113858"
-  //let TWEEEEEEEEEET = "1275854284526149632"
-  //let TWEEEEEEEEEET = "1260575550734819328"
+  let TweetSourceId = idFromURL()
 
-  if (idFromURL()) {
-    TWEEEEEEEEEET = idFromURL()
+  if (!TweetSourceId) {
+    TweetSourceId = await api.randomSourceTweetId()
   }
 
   //let followers = await followerGraph("1611503244"); // User id
-  let usersThatHaveRetweeted = await retweetFollowerNetwork(TWEEEEEEEEEET); // Tweet id
-  let retweets = await retweetFollowerNetwork(TWEEEEEEEEEET);
+  let usersThatHaveRetweeted = await retweetFollowerNetwork(TweetSourceId); // Tweet id
+  let retweets = await retweetFollowerNetwork(TweetSourceId);
 
   var toRemove;
   var popup;
@@ -223,14 +218,14 @@ function idFromURL() {
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
-      retweets = await getRetweets(TWEEEEEEEEEET);
+      retweets = await getRetweets(TweetSourceId);
       showGraph(retweets);
     } else {
       tweetsShown = false;
       while (container.firstChild) {
         container.removeChild(container.lastChild);
       }
-      usersThatHaveRetweeted = await retweetFollowerNetwork(TWEEEEEEEEEET)
+      usersThatHaveRetweeted = await retweetFollowerNetwork(TweetSourceId)
       showGraph(usersThatHaveRetweeted);
     }
   }

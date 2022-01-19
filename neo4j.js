@@ -88,11 +88,19 @@ async function getFollowernetworkFromRetweets(id) {
   }
 }
 
+async function findRandomSourceTweet() {
+  return await query(`
+    MATCH (t)<-[:retweet]-(a) 
+    RETURN t, rand() as r
+    ORDER BY r LIMIT 1`)
+}
+
 module.exports = {
   driver,
   query,
   getFollowers,
   findRetweets,
   getUserFromTweet,
-  getFollowernetworkFromRetweets
+  getFollowernetworkFromRetweets,
+  findRandomSourceTweet
 }
