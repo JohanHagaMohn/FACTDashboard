@@ -122,7 +122,7 @@ async function getRetweets(id) {
   
       const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.identity.low).distance(4 * radius))
-        .force("charge", d3.forceManyBody())
+        .force("charge", d3.forceManyBody().strength(-400))
         .force("center", d3.forceCenter(width / 2, height / 2));
   
       const svg = d3.create("svg")
@@ -164,6 +164,7 @@ async function getRetweets(id) {
           .attr("y2", d => d.target.y);
       });
       node.on('click', async function (a, n) {
+        d3.forceSimulation(node).force("charge", d3.forceManyBody().strength(1000))
         console.log(n)
         if (toRemove) {
           d3.select(toRemove).transition().duration(350).attr("r", radius);
