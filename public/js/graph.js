@@ -40,6 +40,26 @@ async function retweetFollowerNetwork(id) {
   }
 }
 
+async function getRetweets(id) {
+  const retweets = await api.findRetweets(id)
+
+  dataNodes = []
+  edges = []
+
+  dataNodes.push(retweets.records[0]._fields[0])
+
+  for (let record of retweets.records) {
+    edges.push(record._fields[1])
+    dataNodes.push(record._fields[2])
+  }
+
+  return {
+    dataNodes,
+    edges,
+    src: id
+  }
+}
+
 (async function () {
   const drag = simulation => {
 
