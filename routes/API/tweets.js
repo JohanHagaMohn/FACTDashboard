@@ -128,5 +128,29 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  router.get("/tweetwithuserdata", async (req, res, next) => {
+    if (!req.query.id) {
+      res.status(400).send("Missing requierd argument id")
+      return
+    }
+
+    let promises = []
+    promises.push(mongo.getTweetById(req.query.id))
+    promises.push(neo4j.getUserFromTweet(req.query.id))
+
+    let results = await Promise.all(promises)
+    if (results[1].records.length == 0) {
+      res.status(400).send("Failed to find corresponding user")
+      return
+    }
+
+    let userID = results[1].records[0]._fields[0].properties.id_str
+    let user = await mongo.getUserById(userID)
+
+    user.status = results[0]
+
+    res.send(user)
+  })
+
   return router
 }

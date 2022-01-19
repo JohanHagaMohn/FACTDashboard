@@ -106,3 +106,12 @@ api.followernetworkFromRetweets = async function(id) {
   let res = await fetch(`/API/followernetwork/retweet?id=${id}`)
   return await res.json()
 }
+
+api.getTweetWithUserData = async function(id) {
+  if (!id) {
+    throw Exception("Missing required argument, id")
+  }
+  
+  let res = await fetch(`/API/tweets/tweetwithuserdata?id=${id}`)
+  return await res.json()
+}

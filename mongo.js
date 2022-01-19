@@ -34,14 +34,46 @@ async function countUsers(query) {
   return await usersCol.countDocuments(query)
 }
 
-// Find a tweet by its id
+// Find a tweet by query
 async function getTweet(query) {
   return await tweetCol.findOne(query)
+}
+
+// Find a tweet by id
+async function getTweetById(id) {
+  if (!id) {
+    throw Exception("id is a requierd argument")
+  }
+
+  query = {
+    "id_str": {
+      "$eq": id
+    }
+  }
+
+  return await getTweet(query)
+
 }
 
 // Find user
 async function getUser(query) {
   return await usersCol.findOne(query)
+}
+
+// Find a user by id
+async function getUserById(id) {
+  if (!id) {
+    throw Exception("id is a requierd argument")
+  }
+
+  query = {
+    "id_str": {
+      "$eq": id
+    }
+  }
+
+  return await getUser(query)
+
 }
 
 // Find random tweet
@@ -64,7 +96,9 @@ module.exports = {
   countTweets,
   countUsers,
   getTweet,
+  getTweetById,
   getUser,
+  getUserById,
   getRandomTweet,
   getRandomUser
 }

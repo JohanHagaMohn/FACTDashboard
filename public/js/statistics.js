@@ -15,9 +15,8 @@ const loadingAnimation = "<div class=\"d-flex flex-wrap justify-content-center\"
 (async function () {
 
   let randTweet = document.getElementById("randTweet")
-  let nCols = Math.floor(randTweet.clientWidth / 330 * 0.97)
 
-  let tweets = await api.getRandomTweets(nCols)
+  let tweets = await api.getRandomTweets(3)
 
   for (let i = 0; i < tweets.length; i++) {
     let elm = generateTweetDOM(tweets[i])
