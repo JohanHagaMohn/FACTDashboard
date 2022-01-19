@@ -38,7 +38,7 @@ function generateTweetDOM(user) {
     <div id="tweetTop">
       <div id="tweetProfile">
       </div>
-      <a href="https://www.google.com" target="_blank" id="tweetUser">
+      <a href="https://www.twitter.com/${user.screen_name}" target="_blank" id="tweetUser">
         <h6 id="tweetUsername">${user.name}</h6>
         <h6 id="tweetTag">@${user.screen_name}</h6>
       </a>
@@ -46,7 +46,7 @@ function generateTweetDOM(user) {
     </div>
     <div id="tweetMessage">${message.full_text}</div>
     <div id="tweetDetails" >
-      <a href="https://www.google.com" target="_blank" id="tweetTime">${time}</a>
+      <a href="https://www.twitter.com/${user.screen_name}" target="_blank" id="tweetTime">${time}</a>
     </div >`;
 
     let image = genereateImgDOM(user.profile_image_url_https, userImage)
