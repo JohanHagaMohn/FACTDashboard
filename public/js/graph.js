@@ -172,9 +172,9 @@ async function getRetweets(id) {
         }
         toRemove = this;
         
-        const user = (typeof n.properties.full_text == 'undefined')
+        //const user = (typeof n.properties.full_text == 'undefined')
       
-        popup = (user) ? generateUserDOM(await api.getUser(n.properties.id_str)) : generateTwitterDOM(await api.getUser(n.properties.id_str));
+        popup = (!tweetsShown) ? generateUserDOM(await api.getUser(n.properties.id_str)) : generateTweetDOM(await api.getTweetWithUserData(n.properties.id_str));
   
         popup.id = "graphTweet";
         d3.select(this).transition().duration(350).attr("r", radius * 2.5);
