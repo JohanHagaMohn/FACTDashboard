@@ -9,7 +9,6 @@ const uri = process.env.NEO4J_DB_URI
 let driver
 try {
   driver = neo4j.driver(uri, neo4j.auth.basic(username, password))
-  //session = driver.session()
 } catch (err) {
   console.warn("Failed to connect to Neo4j")
   console.log(err)
