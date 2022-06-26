@@ -21,6 +21,7 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  // Get user from id
   router.get("/get", async (req, res, next) => {
     let query = {}
 
@@ -41,11 +42,13 @@ module.exports = (mongo, neo4j) => {
     }
   })
 
+  // Get random user
   router.get("/random", async (req, res, next) => {
     const response = await mongo.getRandomUser(req.query.n | 1)
     res.send(response)
   })
 
+  // Get user from tweet
   router.get("/getFromTweet", async (req, res, next) => {
     if (!req.query.id) {
       res.status(400).send("Missing requierd argument, id")

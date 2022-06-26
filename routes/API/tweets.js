@@ -119,6 +119,7 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  // Get retweets from id of source
   router.get("/retweets", async (req, res, next) => {
     if (!req.query.id) {
       res.status(400).send("Missing requierd argument id")
@@ -128,6 +129,7 @@ module.exports = (mongo, neo4j) => {
     res.send(response)
   })
 
+  // Get user from tweet
   async function userDataFromTweet(id) {
     let results = await neo4j.getUserFromTweet(id)
     if (results.records.length == 0) {
@@ -139,6 +141,7 @@ module.exports = (mongo, neo4j) => {
     return user
   }
 
+  // Get tweet from user
   router.get("/tweetwithuserdata", async (req, res, next) => {
     if (!req.query.id) {
       res.status(400).send("Missing requierd argument id")
@@ -162,6 +165,7 @@ module.exports = (mongo, neo4j) => {
     }
   })
 
+  // Get random tweet from user
   router.get("/randomwithuserdata", async (req, res, next) => {
     const response = await mongo.getRandomTweet(req.query.n | 1)
 
@@ -180,6 +184,7 @@ module.exports = (mongo, neo4j) => {
     res.send(users)
   })
 
+  // Random tweet
   router.get("/randomsourceid", async (req, res, next) => {
     const response = await neo4j.findRandomSourceTweet()
 
